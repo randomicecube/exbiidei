@@ -1,0 +1,13 @@
+:root {
+  --background: #1b1c1c; 
+}
+
+body {
+  background: var(--background);
+  color: white;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}

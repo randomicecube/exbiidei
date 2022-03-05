@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% block head %}
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- TODO - link below could be changed for a static icon/image -->
+  <link rel="shortcut icon" href="https://rnl.tecnico.ulisboa.pt/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'DEIPaper/styles/base.css' %}">
+  <title>DEIPaper</title>
+</head>
+{% endblock %}
+{% block body %}
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+      <img src="https://rnl.tecnico.ulisboa.pt/favicon.png" width="48" height="48" alt="IST Logo">
+      DEIPaper
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <!-- TODO - an "about" page which explains the general purpose of DEIPaper would be nice -->
+      </ul>
+    </div>
+  </nav>
+</body>
+{% endblock %}
+</html>
