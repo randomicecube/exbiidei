@@ -1,0 +1,37 @@
+{% extends 'DEIPaper/base.html' %}
+
+<!-- this page will contain the navbar - didn't make sense to place it in index.html -->
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">
+    <img
+      src="https://rnl.tecnico.ulisboa.pt/favicon.png"
+      width="48"
+      height="48"
+      alt="IST Logo"
+    />
+    DEIPaper
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <a class="nav-link" href="/"
+        >Home <span class="sr-only">(current)</span></a
+      >
+      <!-- TODO - an "about" page which explains the general purpose of DEIPaper would be nice -->
+    </ul>
+  </div>
+</nav>
+{% endblock %}

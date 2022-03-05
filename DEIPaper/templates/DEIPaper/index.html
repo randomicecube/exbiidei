@@ -1,1 +1,212 @@
-{% extends 'base.html' %}
+{% extends 'DEIPaper/base.html' %} {% load crispy_forms_tags %} {% block body %}
+<div
+  style="background: var(--background) !important"
+  class="jumbotron"
+  id="home-page-content"
+>
+  <a href="/">
+    <img
+      src="../static/DEIPaper/favicons/DEI_RGB.png"
+      alt="DEI Icon"
+      id="dei-icon"
+    />
+  </a>
+  <hr class="my-6" />
+  <h1 class="display-4">Bem-vind@ ao DEIPaper!</h1>
+  <hr class="my-2" />
+  <p class="lead">
+    Este espaço tem como objetivo compilar informação detalhada sobre qualquer
+    publicação científica produzida por colaboradores do DEI.
+  </p>
+  <hr class="my-4" />
+
+  <div class="card-deck">
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Listar Publicações</b></h4>
+        <p class="card-text">
+          Consultar todas as publicações científicas produzidas pelos
+          colaboradores do DEI.
+        </p>
+        <a
+          href="/papers/list-all-papers"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ModalListAllPapers"
+        >
+          Listar Publicações
+        </a>
+        <div id="ModalListAllPapers" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Listar Publicações</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="get"
+                  action="/papers/list-all-papers/"
+                  class="form-group"
+                >
+                  {{forms.0|crispy}}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      Listar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Pesquisar Publicação</b></h4>
+        <p class="card-text">Consultar uma publicação específica.</p>
+        <a
+          href="/papers/list-specific-paper"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ModalListSpecificPaper"
+          >Consultar publicação</a
+        >
+        <div id="ModalListSpecificPaper" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Pesquisar Publicação</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="get"
+                  action="/papers/list-specific-paper/"
+                  class="form-group"
+                >
+                  {{forms.1|crispy}}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      Listar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Criar Publicação</b></h4>
+        <p class="card-text">
+          Adicionar uma publicação à base de dados do DEI.
+        </p>
+        <a
+          href="/papers/create-paper"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ModalCreatePaper"
+          >Adicionar publicação</a
+        >
+        <div id="ModalCreatePaper" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Criar Publicação</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="post"
+                  action="/papers/create-paper/"
+                  class="form-group"
+                >
+                  {% csrf_token %} {{forms.2|crispy}}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      Criar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Editar Publicação</b></h4>
+        <p class="card-text">Editar uma publicação existente.</p>
+        <a
+          href="/papers/edit-paper"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ModalEditPaper"
+          >Editar publicação</a
+        >
+        <div id="ModalEditPaper" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Editar Publicação</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="post"
+                  action="/papers/edit-paper/"
+                  class="form-group"
+                >
+                  {% csrf_token %} {{forms.3|crispy}}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      Editar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Remover Publicação</b></h4>
+        <p class="card-text">Remover uma publicação existente.</p>
+        <a
+          href="/papers/delete-paper"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#ModalDeletePaper"
+          >Remover publicação</a
+        >
+        <div id="ModalDeletePaper" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Remover Publicação</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="post"
+                  action="/papers/delete-paper/"
+                  class="form-group"
+                >
+                  {% csrf_token %} {{forms.4|crispy}}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      Eliminar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
