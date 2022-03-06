@@ -1,0 +1,82 @@
+{% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
+
+<!-- this page will list all the information about a given paper (coming from views via "paper") -->
+
+{% block body %} {% if paper %}
+<div class="container center-content-screen" id="error-page-content">
+  <div class="row">
+    <div class="row-lg-10 mx-auto">
+      <blockquote
+        class="blockquote blockquote-custom bg-dark p-5 shadow rounded"
+      >
+        <!-- place the logo (via img with logoUrl) if it exists in the top right corner of the div -->
+        {% if logoUrl != "" %}
+        <!-- the logo should be in the top right -->
+        <img
+          src="{{paper.logoUrl}}"
+          class="img-fluid rounded mx-auto d-block float-right"
+          alt="logo"
+          style="max-height: 50px; max-width: 100px; margin-top: -20px"
+        />
+        {% endif %}
+        <!-- TODO - this div should contain the logo if it exists, DEI's if not -->
+        <div class="blockquote-custom-icon bg-info shadow-sm">{{paper.id}}</div>
+        <h4 class="mb-0 mt-2"><b>{{paper.title}}</b></h4>
+        <p class="mb-0 mt-2 font-italic">{{paper.abstract}}</p>
+        <footer class="blockquote-footer pt-4 mt-4 border-top">
+          <cite>{{paper.authors}}</cite>
+          {% if paper.docUrl != "" %}
+          <hr />
+          <p>
+            O documento completo pode ser encontrado
+            <a href="{{paper.docUrl}}">aqui</a>.
+          </p>
+          {% endif %}
+        </footer>
+      </blockquote>
+    </div>
+  </div>
+</div>
+{% else %}
+<!-- if the paper is not found, show an error message inside a card -->
+<div class="center-content-screen" id="error-page-content">
+  <h4 class="card-title"><b>Publicação não encontrada</b></h4>
+  <hr class="my-2" />
+  <p class="card-text">
+    A publicação a que está a tentar aceder não existe e/ou acedeu ao endereço
+    sem antes ter passado por um formulário de pesquisa.
+  </p>
+  <p>Clique no botão abaixo para pesquisar uma nova publicação.</p>
+  <!-- add a button below, which opens a modal similar to the homepage -->
+  <a
+    href="/papers/list-specific-paper"
+    class="btn btn-secondary"
+    data-toggle="modal"
+    data-target="#ModalListSpecificPaper"
+    >Consultar publicação</a
+  >
+  <div id="ModalListSpecificPaper" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h4 class="modal-title text-xs-center">Pesquisar Publicação</h4>
+        </div>
+        <div class="modal-body bg-dark">
+          <form
+            method="get"
+            action="/papers/list-specific-paper/"
+            class="form-group"
+          >
+            {{form|crispy}}
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block">
+                Pesquisar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %} {% endblock %}

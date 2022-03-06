@@ -1,7 +1,7 @@
 {% extends 'DEIPaper/base.html' %} {% load crispy_forms_tags %} {% block body %}
 <div
   style="background: var(--background) !important"
-  class="jumbotron"
+  class="jumbotron center-content-screen"
   id="home-page-content"
 >
   <a href="/">
@@ -87,7 +87,7 @@
                   {{forms.1|crispy}}
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">
-                      Listar
+                      Pesquisar
                     </button>
                   </div>
                 </form>
@@ -154,7 +154,7 @@
               </div>
               <div class="modal-body bg-dark">
                 <form
-                  method="post"
+                  method="put"
                   action="/papers/edit-paper/"
                   class="form-group"
                 >
@@ -190,7 +190,7 @@
               </div>
               <div class="modal-body bg-dark">
                 <form
-                  method="post"
+                  method="delete"
                   action="/papers/delete-paper/"
                   class="form-group"
                 >

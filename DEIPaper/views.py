@@ -14,43 +14,62 @@ def index(request):
   return render(request, "DEIPaper/index.html", {"forms":forms})
 
 def list_all_papers(request):
-  # limit = int(request.GET.get("limit", default=40))
-  # offset = int(request.GET.get("offset", default=1))
-  # print("limit:", limit)
-  # print("offset:", offset)
+  """
+  Lists all papers.
+  Worth noting that we safeguard against a user calling the page directly from its URL
+  checking for None, and for them not inputting a limit or offset by checking with isdigit.
+  """
+  limit = request.GET.get("limit")
+  if limit == None or not limit.isdigit():
+    limit = 30 # 30 is the default limit chosen
+  offset = request.GET.get("offset")
+  if offset == None or not offset.isdigit():
+    offset = 0 # 0 is the default offset chosen
+  print("limit:", limit)
+  print("offset:", offset)
   # answer = requests.get(PAPERS_ENDPOINT, params={'limit':limit, 'offset':offset})
-  # if not limit:
-  #   limit = answer.json()['total']
-  # if not offset:
-  #   offset = 1
-  # print("Starting to list papers...")
+  if not limit:
+    print("nada")
+    # limit = answer.json()['total']
+  if not offset:
+    offset = 1
+  print("Starting to list papers...")
   # print(answer.text)
-  # print("Done!")
-  if request.method == "GET":
-    print("Gotcha!")
-  form = ListAllPapersForm(request.GET)
-  return render(request, "DEIPaper/index.html")
+  print("Done!")
+  return render(request, "DEIPaper/list-all-papers.html")
 
 def list_specific_paper(request):
-  if request.method == "GET":
-    print("Gotcha!")
-  form = ListSpecificPaperForm(request.GET)
-  return render(request, "DEIPaper/index.html", {"forms":[form]})
+  """
+  Lists a specific paper.
+  """
+  paper_id = request.GET.get("paper_id")
+  if paper_id == None:
+    return render(request, "DEIPaper/list-specific-paper.html", {
+      "form":ListSpecificPaperForm(request.GET)}
+    ) # TODO - ADD ERROR PAGE
+  answer = requests.get(PAPERS_ENDPOINT + "/" + paper_id)
+  if answer.status_code != 200:
+    return render(request, "DEIPaper/list-specific-paper.html", {
+      "form":ListSpecificPaperForm(request.GET)}
+    )
+  print("paper_id:", paper_id)
+  print(answer.text)
+  return render(request, "DEIPaper/list-specific-paper.html", {"paper":answer.json()})
 
 def create_paper(request):
   if request.method == "POST":
     print("Gotcha!")
   form = CreatePaperForm(request.POST)
-  return render(request, "DEIPaper/index.html", {"forms":[form]})
+  return render(request, "DEIPaper/create-paper.html", {"forms":[form]})
 
 def edit_paper(request):
-  if request.method == "POST":
+  if request.method == "PUT":
     print("Gotcha!")
-  form = EditPaperForm(request.POST)
-  return render(request, "DEIPaper/index.html", {"forms":[form]})
+  form = EditPaperForm(request.PUT)
+  return render(request, "DEIPaper/edit-paper.html", {"forms":[form]})
 
 def delete_paper(request):
-  if request.method == "POST":
+  if request.method == "DELETE":
     print("Gotcha!")
-  form = DeletePaperForm(request.POST)
-  return render(request, "DEIPaper/index.html", {"forms":[form]})
+  form = DeletePaperForm(request.DELETE)
+  return render(request, "DEIPaper/delete-paper.html", {"forms":[form]})

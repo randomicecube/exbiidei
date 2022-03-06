@@ -1,17 +1,16 @@
 {% extends 'DEIPaper/base.html' %}
 
-<!-- this page will contain the navbar - didn't make sense to place it in index.html -->
+<!-- this page contains the navbar - didn't make sense to place it in index.html -->
 
 {% block body %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/">
+  <a href="/">
     <img
-      src="https://rnl.tecnico.ulisboa.pt/favicon.png"
-      width="48"
-      height="48"
-      alt="IST Logo"
+      src="/static/DEIPaper/favicons/DEI_RGB.png"
+      alt="DEI Icon"
+      id="dei-icon"
+      style="width: 200px; height: 66px"
     />
-    DEIPaper
   </a>
   <button
     class="navbar-toggler"
@@ -29,6 +28,21 @@
     <ul class="navbar-nav mr-auto">
       <a class="nav-link" href="/"
         >Home <span class="sr-only">(current)</span></a
+      >
+      <a class="nav-link" href="/papers/list-all-papers"
+        >Listar Publicações<span class="sr-only">(current)</span></a
+      >
+      <a class="nav-link" href="/papers/list-specific-paper"
+        >Pesquisar Publicação<span class="sr-only">(current)</span></a
+      >
+      <a class="nav-link" href="/papers/create-paper"
+        >Adicionar Publicação<span class="sr-only">(current)</span></a
+      >
+      <a class="nav-link" href="/papers/edit-paper"
+        >Atualizar Publicação<span class="sr-only">(current)</span></a
+      >
+      <a class="nav-link" href="/papers/delete-paper"
+        >Remover Publicação<span class="sr-only">(current)</span></a
       >
       <!-- TODO - an "about" page which explains the general purpose of DEIPaper would be nice -->
     </ul>

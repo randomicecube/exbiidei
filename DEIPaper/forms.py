@@ -12,7 +12,7 @@ DOC_URL = "Insira um URL para o documento completo, se assim preferir."
 
 class ListAllPapersForm(forms.Form):
   limit = forms.IntegerField(required=False, label=LIMIT)
-  offset = forms.IntegerField(required=False, label=OFFSET, initial=1)
+  offset = forms.IntegerField(required=False, label=OFFSET)
 
 class ListSpecificPaperForm(forms.Form):
   paper_id = forms.IntegerField(required=True, label="Paper ID")

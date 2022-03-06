@@ -17,14 +17,47 @@ body {
   height: 100px;
 }
 
-#home-page-content {
+.center-content-screen {
   /* center elements */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#error-page-content {
+  height: 80vh;
+}
+
+#home-page-content {
   height: 95vh;
 }
+
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+.blockquote-custom {
+  position: relative;
+  font-size: 1.1rem;
+}
+
+.blockquote-custom-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -25px;
+  left: 50px;
+}
+
+/* Homepage modal forms */
 
 .modal-body {
   background-color: #1b1c1c;
