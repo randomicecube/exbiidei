@@ -1,42 +1,44 @@
 from django.shortcuts import render
 import requests, os
-from .forms import ListAllPapersForm, ListSpecificPaperForm, CreatePaperForm, EditPaperForm, DeletePaperForm
-
-# Create your views here.
+from .forms import ListSpecificPaperForm, CreatePaperForm, EditPaperForm, DeletePaperForm
+from django.http import HttpRequest
 
 PAPERS_ENDPOINT = os.getenv(
   "PAPERS_ENDPOINT",
   default="https://aduck.rnl.tecnico.ulisboa.pt/istpaper/papers"
 )
 
+PAGE_SIZE = 10
+
 def index(request):
-  forms = [ListAllPapersForm(request.GET), ListSpecificPaperForm(request.GET), CreatePaperForm(request.POST), EditPaperForm(request.POST), DeletePaperForm(request.POST)]
+  forms = [ListSpecificPaperForm(request.GET), CreatePaperForm(request.POST), EditPaperForm(request.POST), DeletePaperForm(request.POST)]
   return render(request, "DEIPaper/index.html", {"forms":forms})
 
 def list_all_papers(request):
+  # TODO: when there isn't a second page, "next" shouldn't be displayed
   """
   Lists all papers.
-  Worth noting that we safeguard against a user calling the page directly from its URL
-  checking for None, and for them not inputting a limit or offset by checking with isdigit.
   """
-  limit = request.GET.get("limit")
-  if limit == None or not limit.isdigit():
-    limit = 30 # 30 is the default limit chosen
-  offset = request.GET.get("offset")
-  if offset == None or not offset.isdigit():
-    offset = 0 # 0 is the default offset chosen
-  print("limit:", limit)
-  print("offset:", offset)
-  # answer = requests.get(PAPERS_ENDPOINT, params={'limit':limit, 'offset':offset})
-  if not limit:
-    print("nada")
-    # limit = answer.json()['total']
-  if not offset:
-    offset = 1
-  print("Starting to list papers...")
-  # print(answer.text)
-  print("Done!")
-  return render(request, "DEIPaper/list-all-papers.html")
+  first_paper_id = request.GET.get("first_id")
+  last_paper_id = request.GET.get("last_id")
+  prev_page_clicked = request.GET.get("prev")
+  if not first_paper_id or not last_paper_id:
+    response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE, 'offset':0})
+  else:
+    first_paper_id = int(first_paper_id)
+    last_paper_id = int(last_paper_id)
+    prev_page_clicked = int(prev_page_clicked)
+    if not prev_page_clicked:
+      response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE, 'offset':last_paper_id})
+    else:
+      first_paper_id = 0 if first_paper_id <= PAGE_SIZE + 1 else first_paper_id - PAGE_SIZE - 1
+      response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE, 'offset':first_paper_id})    
+  json = response.json()
+  if len(json) == 0: # got to the end of the list
+    list_all_papers(HttpRequest())
+  return render(request, "DEIPaper/list-all-papers.html", {
+    "papers": json,
+  })
 
 def list_specific_paper(request):
   """
@@ -54,7 +56,10 @@ def list_specific_paper(request):
     )
   print("paper_id:", paper_id)
   print(answer.text)
-  return render(request, "DEIPaper/list-specific-paper.html", {"paper":answer.json()})
+  return render(request, "DEIPaper/list-specific-paper.html", {
+    "paper":answer.json(),
+    "form":ListSpecificPaperForm(request.GET)}
+  )
 
 def create_paper(request):
   if request.method == "POST":

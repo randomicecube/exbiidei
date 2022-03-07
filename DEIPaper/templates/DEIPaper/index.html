@@ -20,47 +20,22 @@
   </p>
   <hr class="my-4" />
 
-  <div class="card-deck">
-    <div class="card bg-dark text-center">
-      <div class="card-body">
-        <h4 class="card-title"><b>Listar Publicações</b></h4>
-        <p class="card-text">
-          Consultar todas as publicações científicas produzidas pelos
-          colaboradores do DEI.
-        </p>
-        <a
-          href="/papers/list-all-papers"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#ModalListAllPapers"
-        >
-          Listar Publicações
-        </a>
-        <div id="ModalListAllPapers" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-primary">
-                <h4 class="modal-title text-xs-center">Listar Publicações</h4>
-              </div>
-              <div class="modal-body bg-dark">
-                <form
-                  method="get"
-                  action="/papers/list-all-papers/"
-                  class="form-group"
-                >
-                  {{forms.0|crispy}}
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">
-                      Listar
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="card bg-info text-center">
+    <div class="card-body">
+      <h4 class="card-title"><b>Listar Publicações</b></h4>
+      <p class="card-text">
+        Consultar todas as publicações científicas produzidas pelos
+        colaboradores do DEI.
+      </p>
+      <a href="/papers/list-all-papers" class="btn btn-primary">
+        Listar Publicações
+      </a>
     </div>
+  </div>
+
+  <hr class="my-5" />
+
+  <div class="card-deck">
     <div class="card bg-dark text-center">
       <div class="card-body">
         <h4 class="card-title"><b>Pesquisar Publicação</b></h4>
@@ -84,7 +59,7 @@
                   action="/papers/list-specific-paper/"
                   class="form-group"
                 >
-                  {{forms.1|crispy}}
+                  {{forms.0|crispy}}
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">
                       Pesquisar
@@ -122,7 +97,7 @@
                   action="/papers/create-paper/"
                   class="form-group"
                 >
-                  {% csrf_token %} {{forms.2|crispy}}
+                  {% csrf_token %} {{forms.1|crispy}}
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">
                       Criar
@@ -158,7 +133,7 @@
                   action="/papers/edit-paper/"
                   class="form-group"
                 >
-                  {% csrf_token %} {{forms.3|crispy}}
+                  {% csrf_token %} {{forms.2|crispy}}
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">
                       Editar
@@ -194,7 +169,7 @@
                   action="/papers/delete-paper/"
                   class="form-group"
                 >
-                  {% csrf_token %} {{forms.4|crispy}}
+                  {% csrf_token %} {{forms.3|crispy}}
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">
                       Eliminar

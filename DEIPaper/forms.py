@@ -1,18 +1,11 @@
 from email.policy import default
 from django import forms
 
-LIMIT = "Pretende visualizar até quantas publicações?"
-OFFSET = "Pretende visualizar a partir de que publicação?"
-
 TITLE = "Qual é o título da publicação?"
 AUTHORS = "Quem são os autores?"
 ABSTRACT = "Resuma sucintamente a publicação."
 LOGO_URL = "Insira um pequeno logotipo para acompanhar a publicação, se assim preferir."
 DOC_URL = "Insira um URL para o documento completo, se assim preferir."
-
-class ListAllPapersForm(forms.Form):
-  limit = forms.IntegerField(required=False, label=LIMIT)
-  offset = forms.IntegerField(required=False, label=OFFSET)
 
 class ListSpecificPaperForm(forms.Form):
   paper_id = forms.IntegerField(required=True, label="Paper ID")

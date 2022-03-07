@@ -1,1 +1,185 @@
 {% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
+
+<!-- this page should show a paged view of a given paged array of papers -->
+<!-- each paper should be collapsible: normally it should show authors and title -->
+<!-- in its detailed view, should also should the other information (just like in list-specific-paper) -->
+<!-- this view should be achieved via a table -->
+<!-- each page should contain **at most** 10 entries -->
+<!-- pagination should be implemented via django -->
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"
+/>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#list-all-papers-table").DataTable({
+      filter: false,
+      info: false,
+      paging: false,
+      ordering: false,
+    });
+  });
+</script>
+{% endblock %} {% block body %}
+<div class="container">
+  <div class="row py-5">
+    <div class="col-lg-10 mx-auto">
+      <div class="card rounded shadow border-0">
+        <div class="card-body p-4 bg-dark rounded">
+          <div class="table-responsive">
+            <table
+              id="list-all-papers-table"
+              class="table table-striped text-white text-center"
+            >
+              <thead>
+                <tr>
+                  <td scope="col">
+                    <h6><b>#</b></h6>
+                  </td>
+                  <td scope="col">
+                    <h6><b>Título</b></h6>
+                  </td>
+                  <td scope="col">
+                    <h6><b>Autores</b></h6>
+                  </td>
+                  <td scope="col">
+                    <h6><b>Consultar</b></h6>
+                  </td>
+                  <td scope="col">
+                    <h6><b>Editar</b></h6>
+                  </td>
+                  <td scope="col">
+                    <h6><b>Remover</b></h6>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                {% for paper in papers %}
+                <tr>
+                  <td>{{ paper.id }}</td>
+                  <td><i>{{ paper.title }}</i></td>
+                  <td>{{ paper.authors }}</td>
+                  <td>
+                    <a
+                      href="/papers/list-specific-paper/?paper_id={{ paper.id }}"
+                      class="btn-sm btn-success"
+                      data-toggle="modal"
+                      data-target="#ModalListSpecificPaper"
+                      >Consultar</a
+                    >
+                    <div id="ModalListSpecificPaper" class="modal fade">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header bg-primary">
+                            <h4 class="modal-title text-xs-center">
+                              Consultar Publicação
+                            </h4>
+                          </div>
+                          <div class="modal-body bg-dark">
+                            <form
+                              method="get"
+                              action="/papers/list-specific-paper/?paper_id={{ paper.id }}"
+                              class="form-group"
+                            >
+                              {{ forms.0|crispy }}
+                              <div class="form-group">
+                                <button
+                                  type="submit"
+                                  class="btn btn-primary btn-block"
+                                >
+                                  Pesquisar
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <a
+                      href="/papers/edit-paper/{{ paper.id }}"
+                      class="btn-sm btn-warning"
+                      data-toggle="modal"
+                      data-target="#ModalEditPaper"
+                      >Editar</a
+                    >
+                    <div id="ModalEditPaper" class="modal fade">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header bg-primary">
+                            <h4 class="modal-title text-xs-center">
+                              Editar Publicação
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <a
+                      href="/papers/delete-paper/{{ paper.id }}"
+                      class="btn-sm btn-danger"
+                      data-toggle="modal"
+                      data-target="#ModalDeletePaper"
+                      >Remover</a
+                    >
+                    <div id="ModalDeletePaper" class="modal fade">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header bg-primary">
+                            <h4 class="modal-title text-xs-center">
+                              Remover Publicação
+                            </h4>
+                          </div>
+                          <div class="modal-body bg-dark">
+                            <form
+                              method="get"
+                              action="/papers/delete-paper/{{ paper.id }}"
+                              class="form-group"
+                            >
+                              {{ forms.0|crispy }}
+                              <div class="form-group">
+                                <button
+                                  type="submit"
+                                  class="btn btn-primary btn-block"
+                                >
+                                  Remover
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- add a button group with a previous and next page button -->
+<div class="btn-group">
+  {% with first_paper=papers|first last_paper=papers|last %}
+  <a
+    href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=1"
+    class="btn btn-primary btn-block"
+    >Anterior</a
+  >
+  <a
+    href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=0"
+    class="btn btn-primary btn-block"
+    >Próximo</a
+  >
+  {% endwith %}
+</div>
+{% endblock %}
