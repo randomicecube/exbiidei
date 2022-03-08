@@ -4,73 +4,25 @@
 
 <!-- this page will list all the information about a given paper (coming from views via "paper") -->
 
-{% block body %}
-<div class="container py-5 text-center" id="error-page-content">
-  {% if paper %}
+{% block body %} {% if not response %}
+<!-- the user entered the page directly -->
+<!-- creates a div with a form requesting a paper's id -->
+<div class="container py-5">
   <div class="row">
-    <div class="row-lg-10 mx-auto">
-      <blockquote
-        class="blockquote blockquote-custom bg-dark p-5 shadow rounded"
-      >
-        <!-- place the logo (via img with logoUrl) if it exists in the top right corner of the div -->
-        {% if paper.logoUrl != "" %}
-        <!-- the logo should be in the top right -->
-        <img
-          src="{{paper.logoUrl}}"
-          class="img-fluid rounded mx-auto d-block float-right"
-          alt="logo"
-          style="max-height: 50px; max-width: 100px; margin-top: -20px"
-        />
-        {% endif %}
-        <h4 class="mb-0 mt-2">
-          <b><i>#{{paper.id}}</i> - {{paper.title}}</b>
-        </h4>
-        <p class="mb-0 mt-2 font-italic">{{paper.abstract}}</p>
-        <footer class="blockquote-footer pt-4 mt-4 border-top">
-          <cite>{{paper.authors}}</cite>
-          {% if paper.docUrl != "" %}
-          <hr />
-          <p>
-            O documento completo pode ser encontrado
-            <a href="{{paper.docUrl}}">aqui</a>.
-          </p>
-          {% endif %}
-        </footer>
-      </blockquote>
-    </div>
-  </div>
-  {% else %}
-  <h4 class="card-title"><b>Publicação não encontrada</b></h4>
-  <hr class="my-2" />
-  <p class="card-text">
-    A publicação a que está a tentar aceder não existe e/ou acedeu ao endereço
-    sem antes ter passado por um formulário de pesquisa.
-  </p>
-  {% endif %}
-  <p>Clique no botão abaixo para consultar uma nova publicação.</p>
-  <!-- add a button below, which opens a modal similar to the homepage -->
-  <a
-    href="/papers/list-specific-paper"
-    class="btn btn-info btn-lg"
-    data-toggle="modal"
-    data-target="#ModalListSpecificPaper"
-    >Consultar publicação</a
-  >
-  <div id="ModalListSpecificPaper" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-primary">
-          <h4 class="modal-title text-xs-center">Pesquisar Publicação</h4>
+    <div class="col-md-12">
+      <div class="card bg-dark">
+        <div class="card-header">
+          <h3 class="card-title">Pesquisar Publicação</h3>
         </div>
-        <div class="modal-body bg-dark">
+        <div class="card-body">
           <form
             method="get"
             action="/papers/list-specific-paper/"
             class="form-group"
           >
-            {{form|crispy}}
+            {% csrf_token %} {{ form|crispy }}
             <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block">
+              <button type="submit" class="btn btn-info btn-block">
                 Pesquisar
               </button>
             </div>
@@ -80,6 +32,96 @@
     </div>
   </div>
 </div>
-<!-- space so the button isn't glued to the end of the page, in case the abstract is very long -->
-<br />
-{% endblock %}
+
+{% elif status_code == 200 %}
+<!-- all good -->
+<div class="container py-5 text-center" id="error-page-content">
+  <div class="row">
+    <div class="row-lg-10 mx-auto">
+      <blockquote
+        class="blockquote blockquote-custom bg-dark p-5 shadow rounded"
+      >
+        <!-- place the logo (via img with logoUrl) if it exists in the top right corner of the div -->
+        {% if response.logoUrl != "" %}
+        <!-- the logo should be in the top right -->
+        <img
+          src="{{response.logoUrl}}"
+          class="img-fluid rounded mx-auto d-block float-right"
+          alt="logo"
+          style="max-height: 50px; max-width: 100px; margin-top: -20px"
+        />
+        {% endif %}
+        <h4 class="mb-0 mt-2">
+          <b><i>#{{response.id}}</i> - {{response.title}}</b>
+        </h4>
+        <p class="mb-0 mt-2 font-italic">{{response.abstract}}</p>
+        <footer class="blockquote-footer pt-4 mt-4 border-top">
+          <cite>{{response.authors}}</cite>
+          {% if response.docUrl != "" %}
+          <hr />
+          <p>
+            O documento completo pode ser encontrado
+            <a href="{{response.docUrl}}">aqui</a>.
+          </p>
+          {% endif %}
+        </footer>
+      </blockquote>
+    </div>
+  </div>
+</div>
+{% elif status_code == 400 %}
+<!-- invalid paper ID -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          O ID da publicação que tentou adicionar é inválido.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fa fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif status_code == 404 %}
+<!-- paper not found -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          A publicação que tentou adicionar não foi encontrada.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fa fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<!-- unknown error -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">Ocorreu um erro.</h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fa fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %} {% endblock %}

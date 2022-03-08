@@ -20,29 +20,39 @@ def index(request):
   return render(request, "DEIPaper/index.html", {"forms":forms})
 
 def list_all_papers(request):
-  # TODO: when there isn't a second page, "next" shouldn't be displayed
   """
   Lists all papers.
+  IMPORTANT NOTE: we always request PAGE_SIZE+1 papers, so that we can check if there is a next page to be displayed or not.
   """
   first_paper_id = request.GET.get("first_id")
   last_paper_id = request.GET.get("last_id")
   prev_page_clicked = request.GET.get("prev")
-  if not first_paper_id or not last_paper_id:
-    response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE, 'offset':0})
+  if not first_paper_id:
+    prev_page = False
+    response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE + 1, 'offset':0})
   else:
     first_paper_id = int(first_paper_id)
     last_paper_id = int(last_paper_id)
     prev_page_clicked = int(prev_page_clicked)
     if not prev_page_clicked:
-      response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE, 'offset':last_paper_id})
+      prev_page = True
+      response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE + 1, 'offset':last_paper_id})
     else:
       first_paper_id = 0 if first_paper_id <= PAGE_SIZE + 1 else first_paper_id - PAGE_SIZE - 1
-      response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE, 'offset':first_paper_id})    
+      prev_page = (first_paper_id != 0)
+      response = requests.get(PAPERS_ENDPOINT, params={'limit':PAGE_SIZE + 1, 'offset':first_paper_id})    
+  
   json = response.json()
+  next_page = (len(json) > PAGE_SIZE)
   if len(json) == 0: # got to the end of the list
     list_all_papers(HttpRequest())
+  
+  print("prev_page: " + str(prev_page))
+  print("next_page: " + str(next_page))
   return render(request, "DEIPaper/list-all-papers.html", {
     "papers": json,
+    "prev_page": prev_page,
+    "next_page": next_page,
   })
 
 def list_specific_paper(request):
@@ -53,16 +63,15 @@ def list_specific_paper(request):
   if paper_id == None:
     return render(request, "DEIPaper/list-specific-paper.html", {
       "form":ListSpecificPaperForm(request.GET)}
-    ) # TODO - ADD ERROR PAGE
-  answer = requests.get(PAPERS_ENDPOINT + "/" + paper_id)
-  # print debug
-  print(answer.text)
-  if answer.status_code != 200:
-    return render(request, "DEIPaper/list-specific-paper.html", {
-      "form":ListSpecificPaperForm(request.GET)}
     )
+  response = requests.get(PAPERS_ENDPOINT + "/" + paper_id)
+  # TODO - fallback for a not found paper
+  # print debug
+  print(response.text)
+  print("response'status code is " + str(response.status_code))
   return render(request, "DEIPaper/list-specific-paper.html", {
-    "paper":answer.json(),
+    "response":response.json(),
+    "status_code":response.status_code,
     "form":ListSpecificPaperForm(request.GET)}
   )
 

@@ -28,22 +28,25 @@
 <div class="container">
   <div class="row py-5">
     <div class="col-lg-10 mx-auto">
-      <div class="card rounded shadow border-0">
+      <div class="card rounded-lg shadow-lg border-0">
         <div class="card-body p-4 bg-dark rounded">
           <!-- add a button group with a previous and next page button -->
           <div class="btn-group">
             {% with first_paper=papers|first last_paper=papers|last %}
+            <!-- buttons only displayed if prev and/or next page exist -->
+            {% if prev_page %}
             <a
               href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=1"
               class="btn btn-primary btn-block"
               >Página anterior</a
             >
+            {% endif %} {% if next_page %}
             <a
               href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=0"
               class="btn btn-primary btn-block"
               >Próxima página</a
             >
-            {% endwith %}
+            {% endif %} {% endwith %}
           </div>
           <hr class="my-2" />
           <!-- TODO - AVOID PREV/NEXT SHOWING IF THERE ISN'T A PREV/NEXT PAGE -->
