@@ -1,1 +1,106 @@
-{% extends 'DEIPaper/util-layout.html' %}
+{% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
+<!-- will contain the create paper page -->
+{% block body %}
+
+<!-- if the response's status code is 201, create a success page with a green check in the middle -->
+<!-- otherwise, create an error page with a red cross in the middle and a redirect button to the homepage -->
+
+{% if not response %}
+<!-- the user entered the page directly -->
+<!-- creates a div with a form form a new paper -->
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card bg-dark">
+        <div class="card-header">
+          <h3 class="card-title">Adicionar Publicação</h3>
+        </div>
+        <div class="card-body">
+          <form method="post" action="/papers/create-paper/" class="form-group">
+            {% csrf_token %} {{ form|crispy }}
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-block">
+                Adicionar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% elif response.status_code == 201 %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-success" role="alert">
+        <h1 class="alert-heading">Publicação adicionada com sucesso!</h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif response.status_code == 400 %}
+<!-- invalid paper submitted -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          A publicação que tentou adicionar tem formato inválido.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif response.status_code == 401 %}
+<!-- unauthorized -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          Não tem permissão para adicionar a publicação.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<!-- unknown error -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger text-center" role="alert">
+        <h1 class="alert-heading">
+          Ocorreu um erro ao adicionar a publicação.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %} {% endblock %}

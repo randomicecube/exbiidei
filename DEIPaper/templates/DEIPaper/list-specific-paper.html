@@ -5,7 +5,7 @@
 <!-- this page will list all the information about a given paper (coming from views via "paper") -->
 
 {% block body %}
-<div class="container center-content-screen" id="error-page-content">
+<div class="container py-5 text-center" id="error-page-content">
   {% if paper %}
   <div class="row">
     <div class="row-lg-10 mx-auto">
@@ -13,7 +13,7 @@
         class="blockquote blockquote-custom bg-dark p-5 shadow rounded"
       >
         <!-- place the logo (via img with logoUrl) if it exists in the top right corner of the div -->
-        {% if logoUrl != "" %}
+        {% if paper.logoUrl != "" %}
         <!-- the logo should be in the top right -->
         <img
           src="{{paper.logoUrl}}"
@@ -80,4 +80,6 @@
     </div>
   </div>
 </div>
+<!-- space so the button isn't glued to the end of the page, in case the abstract is very long -->
+<br />
 {% endblock %}

@@ -30,6 +30,23 @@
     <div class="col-lg-10 mx-auto">
       <div class="card rounded shadow border-0">
         <div class="card-body p-4 bg-dark rounded">
+          <!-- add a button group with a previous and next page button -->
+          <div class="btn-group">
+            {% with first_paper=papers|first last_paper=papers|last %}
+            <a
+              href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=1"
+              class="btn btn-primary btn-block"
+              >Página anterior</a
+            >
+            <a
+              href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=0"
+              class="btn btn-primary btn-block"
+              >Próxima página</a
+            >
+            {% endwith %}
+          </div>
+          <hr class="my-2" />
+          <!-- TODO - AVOID PREV/NEXT SHOWING IF THERE ISN'T A PREV/NEXT PAGE -->
           <div class="table-responsive">
             <table
               id="list-all-papers-table"
@@ -67,38 +84,8 @@
                     <a
                       href="/papers/list-specific-paper/?paper_id={{ paper.id }}"
                       class="btn-sm btn-success"
-                      data-toggle="modal"
-                      data-target="#ModalListSpecificPaper"
                       >Consultar</a
                     >
-                    <div id="ModalListSpecificPaper" class="modal fade">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header bg-primary">
-                            <h4 class="modal-title text-xs-center">
-                              Consultar Publicação
-                            </h4>
-                          </div>
-                          <div class="modal-body bg-dark">
-                            <form
-                              method="get"
-                              action="/papers/list-specific-paper/?paper_id={{ paper.id }}"
-                              class="form-group"
-                            >
-                              {{ forms.0|crispy }}
-                              <div class="form-group">
-                                <button
-                                  type="submit"
-                                  class="btn btn-primary btn-block"
-                                >
-                                  Pesquisar
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </td>
                   <td>
                     <a
@@ -146,7 +133,7 @@
                               <div class="form-group">
                                 <button
                                   type="submit"
-                                  class="btn btn-primary btn-block"
+                                  class="btn btn-danger btn-block"
                                 >
                                   Remover
                                 </button>
@@ -166,20 +153,5 @@
       </div>
     </div>
   </div>
-</div>
-<!-- add a button group with a previous and next page button -->
-<div class="btn-group">
-  {% with first_paper=papers|first last_paper=papers|last %}
-  <a
-    href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=1"
-    class="btn btn-primary btn-block"
-    >Anterior</a
-  >
-  <a
-    href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=0"
-    class="btn btn-primary btn-block"
-    >Próximo</a
-  >
-  {% endwith %}
 </div>
 {% endblock %}

@@ -25,9 +25,17 @@ body {
   align-items: center;
 }
 
-#error-page-content {
-  height: 80vh;
+/* Error related styles */
+
+.red-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: red;
+  margin-bottom: 20px;
 }
+
+/* General content related styles */
 
 #list-papers-content {
   margin-top: 50px;

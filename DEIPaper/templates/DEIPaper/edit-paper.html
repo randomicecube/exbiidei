@@ -1,1 +1,91 @@
-{% extends 'DEIPaper/util-layout.html' %}
+{% include 'DEIPaper/util-layout.html' %}
+<!-- edit paper page -->
+
+<!-- TODO - MISSING FUNCTIONALITY, REMOVING DOCURL AND LOGOURL -->
+
+{% load crispy_forms_tags %} {% block body %} {% if not response %}
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card bg-dark">
+        <div class="card-header">
+          <h3 class="card-title">Atualizar Publicação</h3>
+        </div>
+        <div class="card-body">
+          <form method="put" action="/papers/create-paper/" class="form-group">
+            {% csrf_token %} {{ form|crispy }}
+            <div class="form-group">
+              <button type="submit" class="btn btn-warning btn-block">
+                Atualizar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% elif response.status_code == 400 %}
+<!-- invalid paper -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          A publicação que tentou adicionar tem formato inválido.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif response.status_code == 403 %}
+<!-- unauthorized -->
+<div class="container">
+  {% include 'DEIPaper/util-layout.html' %}
+  <!-- edit paper page -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          Você não tem permissão para acessar esta página.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif response.status_code == 404 %}
+<!-- paper not found -->
+<div class="container">
+  {% include 'DEIPaper/util-layout.html' %}
+  <!-- edit paper page -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          A publicação que tentou acessar não existe.
+        </h1>
+        <p>
+          <a href="/papers/list-all-papers" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para a lista de publicações
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %} {% endblock %}

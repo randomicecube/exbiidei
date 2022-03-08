@@ -8,6 +8,11 @@ PAPERS_ENDPOINT = os.getenv(
   default="https://aduck.rnl.tecnico.ulisboa.pt/istpaper/papers"
 )
 
+AUTHENTICATION_TOKEN = os.getenv(
+  "AUTHENTICATION_TOKEN",
+  default="ist199207"
+)
+
 PAGE_SIZE = 10
 
 def index(request):
@@ -50,31 +55,86 @@ def list_specific_paper(request):
       "form":ListSpecificPaperForm(request.GET)}
     ) # TODO - ADD ERROR PAGE
   answer = requests.get(PAPERS_ENDPOINT + "/" + paper_id)
+  # print debug
+  print(answer.text)
   if answer.status_code != 200:
     return render(request, "DEIPaper/list-specific-paper.html", {
       "form":ListSpecificPaperForm(request.GET)}
     )
-  print("paper_id:", paper_id)
-  print(answer.text)
   return render(request, "DEIPaper/list-specific-paper.html", {
     "paper":answer.json(),
     "form":ListSpecificPaperForm(request.GET)}
   )
 
 def create_paper(request):
-  if request.method == "POST":
-    print("Gotcha!")
-  form = CreatePaperForm(request.POST)
-  return render(request, "DEIPaper/create-paper.html", {"forms":[form]})
+  title = request.POST.get("title")
+  authors = request.POST.get("authors")
+  abstract = request.POST.get("abstract")
+  logoUrl = request.POST.get("logoUrl")
+  docUrl = request.POST.get("docUrl")
+  print(title, authors, abstract, logoUrl, docUrl)
+  if not title: #user accessed the URL directly, not filling a form
+    return render(request, "DEIPaper/create-paper.html", {
+      "form":CreatePaperForm(request.POST)}
+    )
+  if logoUrl == None:
+    logoUrl = ""
+  if docUrl == None:
+    docUrl = ""
+  response = requests.post(PAPERS_ENDPOINT, json={
+    "title":title,
+    "authors":authors,
+    "abstract":abstract,
+    "logoUrl":logoUrl,
+    "docUrl":docUrl
+  }, headers={
+    "Authorization": "Bearer " + AUTHENTICATION_TOKEN
+  })
+  # if the paper was created successfully, redirect to a new page which:
+  # - can redirect to the homepage
+  # - can redirect to the specific paper view
+  # error page with option to create a new paper or homepage
+  return render(request, "DEIPaper/create-paper.html", {
+    "response":response.json(),
+    "form":CreatePaperForm(request.POST)}
+  )
 
 def edit_paper(request):
-  if request.method == "PUT":
-    print("Gotcha!")
-  form = EditPaperForm(request.PUT)
-  return render(request, "DEIPaper/edit-paper.html", {"forms":[form]})
+  paper_id = request.GET.get("paper_id")
+  if paper_id == None:
+    return render(request, "DEIPaper/edit-paper.html", {
+      "form":EditPaperForm(request.GET)}
+    )
+  title = request.POST.get("title")
+  authors = request.POST.get("authors")
+  abstract = request.POST.get("abstract")
+  logoUrl = request.POST.get("logoUrl")
+  docUrl = request.POST.get("docUrl")
+  response = requests.put(PAPERS_ENDPOINT + "/" + paper_id, json={
+    "title":title,
+    "authors":authors,
+    "abstract":abstract,
+    "logoUrl":logoUrl,
+    "docUrl":docUrl
+  }, headers={
+    "Authorization": "Bearer " + AUTHENTICATION_TOKEN
+  })
+  return render(request, "DEIPaper/edit-paper.html", {
+    "response":response.json(),
+    "form":EditPaperForm(request.POST)}
+  )
 
 def delete_paper(request):
-  if request.method == "DELETE":
-    print("Gotcha!")
-  form = DeletePaperForm(request.DELETE)
-  return render(request, "DEIPaper/delete-paper.html", {"forms":[form]})
+  paper_id = request.GET.get("paper_id")
+  if paper_id == None:
+    return render(request, "DEIPaper/delete-paper.html", {
+      "form":DeletePaperForm(request.GET)}
+    )
+  response = requests.delete(PAPERS_ENDPOINT + "/" + paper_id, headers={
+    "Authorization": "Bearer " + AUTHENTICATION_TOKEN
+  })
+  return render(request, "DEIPaper/delete-paper.html", {
+    "response":response.json(),
+    "form":DeletePaperForm(request.GET)}
+  )
+    
