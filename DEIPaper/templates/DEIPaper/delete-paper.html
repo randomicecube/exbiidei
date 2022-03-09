@@ -1,105 +1,40 @@
 {% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
-<!-- delete paper pahe -->
-{% block body %} {% if not response %}
-<!-- the user came directly to this page - show delete form -->
-<!-- TODO - ADD CONFIRMATION BUTTON (DO YOU REALLY WANT TO DELETE THIS PUBLICATION) -->
+<!-- delete paper page -->
+{% block body %}
 <div class="container py-5">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card bg-dark text-center">
-        <div class="card-header">
-          <h3 class="card-title">Remover Publicação</h3>
+  <div class="row justify-content-center">
+    <div class="col-sm-8 text-center">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          {% if status_code == 400 %} A publicação que tentou eliminar é
+          inválida. {% elif status_code == 401 or status_code == 403 %} Não tem
+          permissão para eliminar a publicação. {% elif status_code == 404 %} A
+          publicação que tentou eliminar não existe. {% else %} Ocorreu um erro
+          ao tentar eliminar a publicação. {% endif %}
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container py-2">
+  <div class="row justify-content-center">
+    <div class="col-sm-6 text-center">
+      <div class="card-deck">
+        <div class="card bg-dark text-center">
+          <div class="card-body">
+            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
+            <a
+              href="/"
+              class="btn btn-primary btn-block"
+              style="margin-top: auto"
+            >
+              <i class="fa fa-home"></i>
+              Voltar para a página inicial
+            </a>
+          </div>
         </div>
-        <div class="card-body">
-          <form
-            method="delete"
-            action="/papers/delete-paper/"
-            class="form-group"
-          >
-            {% csrf_token %} {{ form|crispy }}
-            <div class="form-group">
-              <button type="submit" class="btn btn-danger btn-block">
-                Remover
-              </button>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   </div>
 </div>
-{% elif status_code == 400 %}
-<!-- invalid paper id -->
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-danger" role="alert">
-        <h1 class="alert-heading">
-          A publicação que tentou remover não existe.
-        </h1>
-        <p>
-          <a href="/papers/list-all-papers" class="btn btn-danger">
-            <i class="fas fa-arrow-left"></i>
-            Voltar para a lista de publicações
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-{% elif status_code == 401 or status_code == 403 %}
-<!-- access token missing/invalid -->
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-danger" role="alert">
-        <h1 class="alert-heading">
-          Não tem permissão para aceder a esta página.
-        </h1>
-        <p>
-          <a href="/papers/list-all-papers" class="btn btn-danger">
-            <i class="fas fa-arrow-left"></i>
-            Voltar para a lista de publicações
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-{% elif status_code == 404 %}
-<!-- paper not found -->
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-danger" role="alert">
-        <h1 class="alert-heading">
-          A publicação que tentou remover não existe.
-        </h1>
-        <p>
-          <a href="/papers/list-all-papers" class="btn btn-danger">
-            <i class="fas fa-arrow-left"></i>
-            Voltar para a lista de publicações
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-{% else %}
-<!-- unknown error -->
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-danger" role="alert">
-        <h1 class="alert-heading">Ocorreu um erro.</h1>
-        <p>
-          <a href="/papers/list-all-papers" class="btn btn-danger">
-            <i class="fas fa-arrow-left"></i>
-            Voltar para a lista de publicações
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-{% endif %} {% endblock %}
+{% endblock %}

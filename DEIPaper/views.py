@@ -16,8 +16,12 @@ AUTHENTICATION_TOKEN = os.getenv(
 PAGE_SIZE = 10
 
 def index(request):
-  forms = [ListSpecificPaperForm(request.GET), CreatePaperForm(request.POST), EditPaperForm(request.POST), DeletePaperForm(request.POST)]
-  return render(request, "DEIPaper/index.html", {"forms":forms})
+  return render(request, "DEIPaper/index.html", 
+    {"forms":[
+      ListSpecificPaperForm(request.GET),
+      CreatePaperForm(request.POST),
+    ]}
+  )
 
 def list_all_papers(request):
   """
@@ -46,22 +50,24 @@ def list_all_papers(request):
   next_page = (len(json) > PAGE_SIZE)
   if len(json) == 0: # got to the end of the list
     return list_all_papers(HttpRequest())
-  
+  elif len(json) > 10:
+    json = json[:-1]
   print("prev_page: " + str(prev_page))
   print("next_page: " + str(next_page))
   return render(request, "DEIPaper/list-all-papers.html", {
-    "papers": json[:-1], # the last element would be in the next page
+    "papers": json, # the last element would be in the next page
     "prev_page": prev_page,
     "next_page": next_page,
-    "form": DeletePaperForm()
+    "form": DeletePaperForm(),
+    "status_code": response.status_code,
   })
 
 def list_specific_paper(request):
   """
   Lists a specific paper.
   """
-  paper_id = request.GET.get("paper_id")
-  if paper_id == None:
+  paper_id = request.GET.get("id")
+  if not paper_id:
     return render(request, "DEIPaper/list-specific-paper.html", {
       "form":ListSpecificPaperForm()}
     )
@@ -75,6 +81,7 @@ def list_specific_paper(request):
     "forms":[
       ListSpecificPaperForm(),
       EditPaperForm(initial=response.json()),
+      DeletePaperForm()
     ]}
   )
 
@@ -82,18 +89,14 @@ def create_paper(request):
   title = request.POST.get("title")
   authors = request.POST.get("authors")
   abstract = request.POST.get("abstract")
-  logoUrl = request.POST.get("logoUrl")
-  docUrl = request.POST.get("docUrl")
+  logoUrl = request.POST.get("logoUrl", "")
+  docUrl = request.POST.get("docUrl", "")
   print(title, authors, abstract, logoUrl, docUrl)
   if not title: #user accessed the URL directly, not filling a form
     return render(request, "DEIPaper/create-paper.html", {
       "form":CreatePaperForm()}
     )
   # TODO - CLEANED DATA
-  if logoUrl == None:
-    logoUrl = ""
-  if docUrl == None:
-    docUrl = ""
   response = requests.post(PAPERS_ENDPOINT, json={
     "title":title,
     "authors":authors,
@@ -114,16 +117,19 @@ def create_paper(request):
   )
 
 def edit_paper(request):
-  paper_id = request.GET.get("paper_id")
-  if paper_id == None:
+  paper_id = request.POST.get("id", "")
+  title = request.POST.get("title", "")
+  authors = request.POST.get("authors", "")
+  abstract = request.POST.get("abstract", "")
+  logoUrl = request.POST.get("logoUrl", "")
+  docUrl = request.POST.get("docUrl", "")
+  print("--------\n" + paper_id, title, authors, abstract, logoUrl, docUrl + "\n--------\n")
+  if not paper_id:
+    print("paper_id is None")
     return render(request, "DEIPaper/edit-paper.html", {
-      "form":EditPaperForm(request.GET)}
-    )
-  title = request.POST.get("title")
-  authors = request.POST.get("authors")
-  abstract = request.POST.get("abstract")
-  logoUrl = request.POST.get("logoUrl")
-  docUrl = request.POST.get("docUrl")
+      "form":EditPaperForm(request.GET),
+    })
+  print("Paper ID is " + paper_id)
   response = requests.put(PAPERS_ENDPOINT + "/" + paper_id, json={
     "title":title,
     "authors":authors,
@@ -140,8 +146,8 @@ def edit_paper(request):
   )
 
 def delete_paper(request):
-  paper_id = request.GET.get("paper_id")
-  if paper_id == None:
+  paper_id = request.GET.get("id")
+  if not paper_id:
     return render(request, "DEIPaper/delete-paper.html", {
       "form":DeletePaperForm()}
     )

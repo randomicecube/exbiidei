@@ -57,7 +57,7 @@
         <p class="mb-0 mt-2 font-italic">{{response.abstract}}</p>
         <footer class="blockquote-footer pt-4 mt-4 border-top">
           <cite>{{response.authors}}</cite>
-          {% if response.docUrl != "" %}
+          {% if response.docUrl %}
           <hr />
           <p>
             O documento completo pode ser encontrado
@@ -143,7 +143,7 @@
               </div>
               <div class="modal-body bg-dark">
                 <form
-                  method="put"
+                  method="post"
                   action="/papers/edit-paper/"
                   class="form-group"
                 >
@@ -151,6 +151,56 @@
                   <div class="form-group">
                     <button type="submit" class="btn btn-warning btn-block">
                       Editar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Apagar Publicação</b></h4>
+        <p class="card-text">
+          Caso pretenda apagar <b>esta</b> publicação, clique aqui.
+        </p>
+        <a
+          href="/papers/delete-paper"
+          class="btn btn-danger"
+          data-toggle="modal"
+          data-target="#ModalDeletePaper"
+          style="margin-top: auto"
+          >Apagar publicação</a
+        >
+        <div id="ModalDeletePaper" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Apagar Publicação</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="post"
+                  action="/papers/delete-paper/"
+                  class="form-group"
+                >
+                  {% csrf_token %} {{forms.2|crispy}}
+                  <div class="form-group">
+                    <p class="text-xs-center">
+                      Como medida de segurança adicional, insira acima o
+                      <i>ID</i> da publicação que deseja remover.
+                    </p>
+                    <p>
+                      <i class="fa fa-exclamation-triangle"></i>
+                      <b
+                        >Tenha em atenção que esta ação não pode ser
+                        revertida!</b
+                      >
+                    </p>
+                    <button type="submit" class="btn btn-danger btn-block">
+                      Apagar
                     </button>
                   </div>
                 </form>

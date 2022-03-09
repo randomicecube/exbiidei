@@ -24,7 +24,7 @@
     });
   });
 </script>
-{% endblock %} {% block body %}
+{% endblock %} {% block body %} {% if status_code == 200 %}
 <div class="container">
   <div class="row py-5">
     <div class="col-lg-10 mx-auto">
@@ -49,7 +49,6 @@
             {% endif %} {% endwith %}
           </div>
           <hr class="my-2" />
-          <!-- TODO - AVOID PREV/NEXT SHOWING IF THERE ISN'T A PREV/NEXT PAGE -->
           <div class="table-responsive">
             <table
               id="list-all-papers-table"
@@ -82,7 +81,7 @@
                   <td>{{ paper.authors }}</td>
                   <td>
                     <a
-                      href="/papers/list-specific-paper/?paper_id={{ paper.id }}"
+                      href="/papers/list-specific-paper/?id={{ paper.id }}"
                       class="btn-sm btn-info"
                       >Consultar</a
                     >
@@ -105,7 +104,7 @@
                           </div>
                           <div class="modal-body bg-dark">
                             <form
-                              method="delete"
+                              method="post"
                               action="/papers/delete-paper/"
                               class="form-group"
                             >
@@ -118,10 +117,11 @@
                                   remover.
                                 </p>
                                 <p>
-                                  <b
-                                    >Tenha em atenção que esta ação não pode ser
-                                    revertida!</b
-                                  >
+                                  <i class="fa fa-exclamation-triangle"></i>
+                                  <b>
+                                    Tenha em atenção que esta ação não pode ser
+                                    revertida!
+                                  </b>
                                 </p>
                                 <button
                                   type="submit"
@@ -146,4 +146,38 @@
     </div>
   </div>
 </div>
-{% endblock %}
+{% else %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-sm-8 text-center">
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          Ocorreu um erro inesperado ao tentar listar as publicações.
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-2">
+  <div class="row justify-content-center">
+    <div class="col-sm-6 text-center">
+      <div class="card-deck">
+        <div class="card bg-dark text-center">
+          <div class="card-body">
+            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
+            <a
+              href="/"
+              class="btn btn-primary btn-block"
+              style="margin-top: auto"
+            >
+              <i class="fa fa-home"></i>
+              Voltar para a página inicial
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %} {% endblock %}

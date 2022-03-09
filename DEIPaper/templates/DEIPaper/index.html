@@ -108,42 +108,6 @@
         </div>
       </div>
     </div>
-    <div class="card bg-dark text-center">
-      <div class="card-body">
-        <h4 class="card-title"><b>Remover Publicação</b></h4>
-        <p class="card-text">Remover uma publicação existente.</p>
-        <a
-          href="/papers/delete-paper"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#ModalDeletePaper"
-          >Remover publicação</a
-        >
-        <div id="ModalDeletePaper" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-primary">
-                <h4 class="modal-title text-xs-center">Remover Publicação</h4>
-              </div>
-              <div class="modal-body bg-dark">
-                <form
-                  method="delete"
-                  action="/papers/delete-paper/"
-                  class="form-group"
-                >
-                  {% csrf_token %} {{forms.3|crispy}}
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-danger btn-block">
-                      Eliminar
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 {% endblock %}
