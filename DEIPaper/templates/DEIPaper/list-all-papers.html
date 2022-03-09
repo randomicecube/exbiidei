@@ -109,8 +109,20 @@
                               action="/papers/delete-paper/"
                               class="form-group"
                             >
-                              {{ forms.1|crispy }}
+                              {{ form|crispy }}
                               <div class="form-group">
+                                <!-- ask if the user is sure about removing the paper -->
+                                <p class="text-xs-center">
+                                  Como medida de segurança adicional, insira
+                                  acima o <i>ID</i> da publicação que deseja
+                                  remover.
+                                </p>
+                                <p>
+                                  <b
+                                    >Tenha em atenção que esta ação não pode ser
+                                    revertida!</b
+                                  >
+                                </p>
                                 <button
                                   type="submit"
                                   class="btn btn-danger btn-block"
