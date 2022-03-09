@@ -69,6 +69,100 @@
     </div>
   </div>
 </div>
+
+<!-- show a card asking whether the user wants to edit the specific paper -->
+<!-- if so, he clicks it and a modal forms pops up, asking for the details -->
+<div
+  style="
+    background: var(--background) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  "
+  class="jumbotron"
+>
+  <div class="card-deck">
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Pesquisar Publicação</b></h4>
+        <p class="card-text">
+          Caso pretenda pesquisar uma nova publicação, clique aqui.
+        </p>
+        <a
+          href="/papers/list-specific-paper"
+          class="btn btn-info"
+          data-toggle="modal"
+          data-target="#ModalListSpecificPaper"
+          style="margin-top: auto"
+          >Consultar publicação</a
+        >
+        <div id="ModalListSpecificPaper" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Pesquisar Publicação</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="get"
+                  action="/papers/list-specific-paper/"
+                  class="form-group"
+                >
+                  {{forms.0|crispy}}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-info btn-block">
+                      Pesquisar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-dark text-center">
+      <div class="card-body">
+        <h4 class="card-title"><b>Editar Publicação</b></h4>
+        <p class="card-text">
+          Caso pretenda editar <b>esta</b> publicação, clique aqui.
+        </p>
+        <a
+          href="/papers/edit-paper"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#ModalEditPaper"
+          style="margin-top: auto"
+          >Editar publicação</a
+        >
+        <div id="ModalEditPaper" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title text-xs-center">Editar Publicação</h4>
+              </div>
+              <div class="modal-body bg-dark">
+                <form
+                  method="put"
+                  action="/papers/edit-paper/"
+                  class="form-group"
+                >
+                  {% csrf_token %} {{forms.1|crispy}}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-warning btn-block">
+                      Editar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% elif status_code == 400 %}
 <!-- invalid paper ID -->
 <div class="container">

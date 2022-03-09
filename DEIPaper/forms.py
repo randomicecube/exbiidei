@@ -18,7 +18,6 @@ class CreatePaperForm(forms.Form):
   docUrl = forms.CharField(max_length=2000, required=False, label=DOC_URL)
 
 class EditPaperForm(forms.Form):
-  paper_id = forms.IntegerField(label="Qual é o ID da publicação que pretende alterar?")
   title = forms.CharField(max_length=200, required=False, label="Se pretender alterar o título, insira-o aqui.")
   authors = forms.CharField(max_length=500, required=False, label="Se pretender alterar os autores, insira-os aqui.")
   abstract = forms.CharField(max_length=2000, required=False, label="Se pretender alterar o resumo, insira-o aqui.")

@@ -30,7 +30,7 @@
   </div>
 </div>
 
-{% elif response.status_code == 201 %}
+{% elif status_code == 201 %}
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
@@ -46,7 +46,7 @@
     </div>
   </div>
 </div>
-{% elif response.status_code == 400 %}
+{% elif status_code == 400 %}
 <!-- invalid paper submitted -->
 <div class="container">
   <div class="row">
@@ -65,7 +65,7 @@
     </div>
   </div>
 </div>
-{% elif response.status_code == 401 %}
+{% elif status_code == 401 %}
 <!-- unauthorized -->
 <div class="container">
   <div class="row">

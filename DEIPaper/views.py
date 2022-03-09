@@ -50,7 +50,7 @@ def list_all_papers(request):
   print("prev_page: " + str(prev_page))
   print("next_page: " + str(next_page))
   return render(request, "DEIPaper/list-all-papers.html", {
-    "papers": json,
+    "papers": json[:-1], # the last element would be in the next page
     "prev_page": prev_page,
     "next_page": next_page,
   })
@@ -65,14 +65,16 @@ def list_specific_paper(request):
       "form":ListSpecificPaperForm(request.GET)}
     )
   response = requests.get(PAPERS_ENDPOINT + "/" + paper_id)
-  # TODO - fallback for a not found paper
   # print debug
-  print(response.text)
+  print(str(response.json()))
   print("response'status code is " + str(response.status_code))
   return render(request, "DEIPaper/list-specific-paper.html", {
     "response":response.json(),
     "status_code":response.status_code,
-    "form":ListSpecificPaperForm(request.GET)}
+    "forms":[
+      ListSpecificPaperForm(request.GET),
+      EditPaperForm(request.POST, initial=response.json()),
+    ]}
   )
 
 def create_paper(request):
@@ -86,6 +88,7 @@ def create_paper(request):
     return render(request, "DEIPaper/create-paper.html", {
       "form":CreatePaperForm(request.POST)}
     )
+  # TODO - CLEANED DATA
   if logoUrl == None:
     logoUrl = ""
   if docUrl == None:
@@ -105,6 +108,7 @@ def create_paper(request):
   # error page with option to create a new paper or homepage
   return render(request, "DEIPaper/create-paper.html", {
     "response":response.json(),
+    "status_code":response.status_code,
     "form":CreatePaperForm(request.POST)}
   )
 
@@ -130,6 +134,7 @@ def edit_paper(request):
   })
   return render(request, "DEIPaper/edit-paper.html", {
     "response":response.json(),
+    "status_code":response.status_code,
     "form":EditPaperForm(request.POST)}
   )
 
@@ -144,6 +149,7 @@ def delete_paper(request):
   })
   return render(request, "DEIPaper/delete-paper.html", {
     "response":response.json(),
+    "status_code":response.status_code,
     "form":DeletePaperForm(request.GET)}
   )
     

@@ -110,42 +110,6 @@
     </div>
     <div class="card bg-dark text-center">
       <div class="card-body">
-        <h4 class="card-title"><b>Editar Publicação</b></h4>
-        <p class="card-text">Editar uma publicação existente.</p>
-        <a
-          href="/papers/edit-paper"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#ModalEditPaper"
-          >Editar publicação</a
-        >
-        <div id="ModalEditPaper" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-primary">
-                <h4 class="modal-title text-xs-center">Editar Publicação</h4>
-              </div>
-              <div class="modal-body bg-dark">
-                <form
-                  method="put"
-                  action="/papers/edit-paper/"
-                  class="form-group"
-                >
-                  {% csrf_token %} {{forms.2|crispy}}
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-warning btn-block">
-                      Editar
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card bg-dark text-center">
-      <div class="card-body">
         <h4 class="card-title"><b>Remover Publicação</b></h4>
         <p class="card-text">Remover uma publicação existente.</p>
         <a

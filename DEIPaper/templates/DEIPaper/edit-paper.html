@@ -27,7 +27,7 @@
   </div>
 </div>
 
-{% elif response.status_code == 400 %}
+{% elif status_code == 400 %}
 <!-- invalid paper -->
 <div class="container">
   <div class="row">
@@ -46,7 +46,7 @@
     </div>
   </div>
 </div>
-{% elif response.status_code == 403 %}
+{% elif status_code == 403 %}
 <!-- unauthorized -->
 <div class="container">
   {% include 'DEIPaper/util-layout.html' %}
@@ -67,7 +67,7 @@
     </div>
   </div>
 </div>
-{% elif response.status_code == 404 %}
+{% elif status_code == 404 %}
 <!-- paper not found -->
 <div class="container">
   {% include 'DEIPaper/util-layout.html' %}
