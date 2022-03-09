@@ -45,7 +45,7 @@ def list_all_papers(request):
   json = response.json()
   next_page = (len(json) > PAGE_SIZE)
   if len(json) == 0: # got to the end of the list
-    list_all_papers(HttpRequest())
+    return list_all_papers(HttpRequest())
   
   print("prev_page: " + str(prev_page))
   print("next_page: " + str(next_page))
@@ -53,6 +53,7 @@ def list_all_papers(request):
     "papers": json[:-1], # the last element would be in the next page
     "prev_page": prev_page,
     "next_page": next_page,
+    "form": DeletePaperForm()
   })
 
 def list_specific_paper(request):
@@ -62,18 +63,18 @@ def list_specific_paper(request):
   paper_id = request.GET.get("paper_id")
   if paper_id == None:
     return render(request, "DEIPaper/list-specific-paper.html", {
-      "form":ListSpecificPaperForm(request.GET)}
+      "form":ListSpecificPaperForm()}
     )
   response = requests.get(PAPERS_ENDPOINT + "/" + paper_id)
   # print debug
-  print(str(response.json()))
+  print(response.json())
   print("response'status code is " + str(response.status_code))
   return render(request, "DEIPaper/list-specific-paper.html", {
     "response":response.json(),
     "status_code":response.status_code,
     "forms":[
-      ListSpecificPaperForm(request.GET),
-      EditPaperForm(request.POST, initial=response.json()),
+      ListSpecificPaperForm(),
+      EditPaperForm(initial=response.json()),
     ]}
   )
 
@@ -86,7 +87,7 @@ def create_paper(request):
   print(title, authors, abstract, logoUrl, docUrl)
   if not title: #user accessed the URL directly, not filling a form
     return render(request, "DEIPaper/create-paper.html", {
-      "form":CreatePaperForm(request.POST)}
+      "form":CreatePaperForm()}
     )
   # TODO - CLEANED DATA
   if logoUrl == None:
@@ -109,7 +110,7 @@ def create_paper(request):
   return render(request, "DEIPaper/create-paper.html", {
     "response":response.json(),
     "status_code":response.status_code,
-    "form":CreatePaperForm(request.POST)}
+    "form":CreatePaperForm()}
   )
 
 def edit_paper(request):
@@ -135,14 +136,14 @@ def edit_paper(request):
   return render(request, "DEIPaper/edit-paper.html", {
     "response":response.json(),
     "status_code":response.status_code,
-    "form":EditPaperForm(request.POST)}
+    "form":EditPaperForm()}
   )
 
 def delete_paper(request):
   paper_id = request.GET.get("paper_id")
   if paper_id == None:
     return render(request, "DEIPaper/delete-paper.html", {
-      "form":DeletePaperForm(request.GET)}
+      "form":DeletePaperForm()}
     )
   response = requests.delete(PAPERS_ENDPOINT + "/" + paper_id, headers={
     "Authorization": "Bearer " + AUTHENTICATION_TOKEN
@@ -150,6 +151,6 @@ def delete_paper(request):
   return render(request, "DEIPaper/delete-paper.html", {
     "response":response.json(),
     "status_code":response.status_code,
-    "form":DeletePaperForm(request.GET)}
+    "form":DeletePaperForm()}
   )
     
