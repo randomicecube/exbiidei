@@ -104,11 +104,11 @@
                           </div>
                           <div class="modal-body bg-dark">
                             <form
-                              method="post"
+                              method="delete"
                               action="/papers/delete-paper/"
                               class="form-group"
                             >
-                              {{ form|crispy }}
+                              {% csrf_token %} {{ form|crispy }}
                               <div class="form-group">
                                 <!-- ask if the user is sure about removing the paper -->
                                 <p class="text-xs-center">

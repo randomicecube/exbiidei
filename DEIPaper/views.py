@@ -147,16 +147,16 @@ def edit_paper(request):
 
 def delete_paper(request):
   paper_id = request.GET.get("id")
+  print("paper id is " + paper_id + " and we're in delete_paper")
   if not paper_id:
     return render(request, "DEIPaper/delete-paper.html", {
-      "form":DeletePaperForm()}
-    )
+      "form":DeletePaperForm()
+    })
   response = requests.delete(PAPERS_ENDPOINT + "/" + paper_id, headers={
     "Authorization": "Bearer " + AUTHENTICATION_TOKEN
   })
   return render(request, "DEIPaper/delete-paper.html", {
-    "response":response.json(),
     "status_code":response.status_code,
-    "form":DeletePaperForm()}
-  )
+    "form":DeletePaperForm()
+  })
     

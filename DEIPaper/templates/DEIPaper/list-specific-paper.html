@@ -181,17 +181,20 @@
                 <h4 class="modal-title text-xs-center">Apagar Publicação</h4>
               </div>
               <div class="modal-body bg-dark">
+                <p>
+                  <b>Tem a certeza que pretende apagar esta publicação?</b>
+                </p>
+                <p>
+                  Como medida de segurança adicional, insira abaixo o
+                  <i>ID</i> da publicação que pretende remover.
+                </p>
                 <form
-                  method="post"
+                  method="delete"
                   action="/papers/delete-paper/"
                   class="form-group"
                 >
                   {% csrf_token %} {{forms.2|crispy}}
                   <div class="form-group">
-                    <p class="text-xs-center">
-                      Como medida de segurança adicional, insira acima o
-                      <i>ID</i> da publicação que deseja remover.
-                    </p>
                     <p>
                       <i class="fa fa-exclamation-triangle"></i>
                       <b

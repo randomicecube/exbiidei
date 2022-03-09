@@ -6,7 +6,9 @@
     <div class="col-sm-8 text-center">
       <div class="alert alert-danger" role="alert">
         <h1 class="alert-heading">
-          {% if status_code == 400 %} A publicação que tentou eliminar é
+          {% if status_code == 204 %} A publicação foi eliminada com sucesso.
+          <!-- error codes -->
+          {%elif status_code == 400 %} A publicação que tentou eliminar é
           inválida. {% elif status_code == 401 or status_code == 403 %} Não tem
           permissão para eliminar a publicação. {% elif status_code == 404 %} A
           publicação que tentou eliminar não existe. {% else %} Ocorreu um erro
