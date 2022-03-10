@@ -129,7 +129,7 @@ def create_paper(request):
   if response.status_code != 201:
     return render(request, "DEIPaper/create-paper.html", {
       "status_code": response.status_code,
-      "form": CreatePaperForm()
+      "form": CreatePaperForm(),
     })
 
   return render(request, "DEIPaper/create-paper.html", {

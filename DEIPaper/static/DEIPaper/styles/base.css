@@ -1,5 +1,5 @@
 :root {
-  --background: #1b1c1c;
+  --background: #1f1e1c;
 }
 
 body {
@@ -56,13 +56,13 @@ table {
   /* rounded corners */
 }
 
-thead {
-  background-color: #343a40;
-}
-
 th,
 td {
-  border-bottom: 1px solid #dddddd;
+  border-color: #363633 !important;
+  border-top-color: #47473f !important;
+  border-right-color: #47473f !important;
+  border-bottom-color: #47473f !important;
+  border-left-color: #47473f !important;
   padding: 10px 20px;
   font-size: 14px;
 }
@@ -105,8 +105,69 @@ td {
   flex-direction: column;
 }
 
-.btn-primary {
+.btn {
   margin-top: auto;
+}
+
+/* Color changes for default bootstrap elements (gruvbox-ish style) */
+
+.card {
+  border-color: #363633 !important;
+  border-top-color: #47473f !important;
+  border-right-color: #47473f !important;
+  border-bottom-color: #47473f !important;
+  border-left-color: #47473f !important;
+}
+
+.bg-dark {
+  background-color: #363633 !important;
+}
+
+.btn-primary,
+.bg-primary {
+  color: rgb(255, 250, 230) !important;
+  background-color: rgb(56, 103, 152) !important;
+  border-color: rgb(50, 91, 134) !important;
+}
+
+.btn-danger,
+.bg-danger {
+  color: rgb(255, 250, 230) !important;
+  background-color: rgb(131, 56, 57) !important;
+  border-color: rgb(118, 51, 52) !important;
+}
+
+.btn-warning,
+.bg-warning {
+  color: rgb(235, 224, 204) !important;
+  background-color: rgb(197, 164, 73) !important;
+  border-color: rgb(174, 145, 65) !important;
+}
+
+.btn-info,
+.bg-info {
+  color: rgb(255, 250, 230) !important;
+  background-color: rgb(76, 130, 131) !important;
+  border-color: rgb(88, 150, 151) !important;
+}
+
+.btn-success,
+.bg-success {
+  color: rgb(255, 250, 230) !important;
+  background-color: rgb(81, 130, 81) !important;
+  border-color: rgb(94, 151, 93) !important;
+}
+
+.alert-success {
+  color: rgb(205, 236, 189) !important;
+  background-color: rgb(50, 66, 51) !important;
+  border-color: rgb(68, 93, 66) !important;
+}
+
+.alert-danger {
+  color: rgb(216, 161, 153) !important;
+  background-color: rgb(57, 27, 27) !important;
+  border-color: rgb(85, 38, 39) !important;
 }
 
 /* ------ custom scrollbar ------ */
