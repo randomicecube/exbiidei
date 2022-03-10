@@ -86,50 +86,7 @@
                     >
                      Remover
                     </a>
-                    <div id="ModalDeletePaper" class="modal fade">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header bg-danger">
-                            <h4 class="modal-title text-center">
-                              Remover Publicação
-                            </h4>
-                          </div>
-                          <div class="modal-body bg-dark">
-                            <p>
-                              <b>
-                                Tem a certeza que pretende apagar esta publicação?
-                              </b>
-                            </p>
-                            <p>
-                              Como medida de segurança adicional, insira abaixo
-                              o <i>ID</i> da publicação que pretende remover.
-                            </p>
-                            <form
-                              method="delete"
-                              action="/papers/delete-paper/"
-                              class="form-group"
-                            >
-                              {% csrf_token %} {{ form|crispy }}
-                              <div class="form-group">
-                                <p>
-                                  <i class="fa fa-exclamation-triangle"></i>
-                                  <b>
-                                    Tenha em atenção que esta ação não pode ser
-                                    revertida!
-                                  </b>
-                                </p>
-                                <button
-                                  type="submit"
-                                  class="btn btn-danger btn-block"
-                                >
-                                  Remover
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    {% include 'DEIPaper/modal-delete-paper.html' %}
                   </td>
                 </tr>
                 {% endfor %}

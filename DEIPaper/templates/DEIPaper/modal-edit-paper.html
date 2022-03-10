@@ -1,0 +1,29 @@
+{% load crispy_forms_tags %}
+
+{% block modal-edit %}
+
+<div id="ModalEditPaper" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h4 class="modal-title text-xs-center">Editar Publicação</h4>
+      </div>
+      <div class="modal-body bg-dark">
+        <form
+          method="post"
+          action="/papers/edit-paper/"
+          class="form-group"
+        >
+          {% csrf_token %} {{ form|crispy }}
+          <div class="form-group">
+            <button type="submit" class="btn btn-warning btn-block">
+              Editar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

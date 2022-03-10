@@ -51,29 +51,7 @@
           data-target="#ModalListSpecificPaper"
           >Consultar publicação</a
         >
-        <div id="ModalListSpecificPaper" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-info">
-                <h4 class="modal-title text-xs-center">Pesquisar Publicação</h4>
-              </div>
-              <div class="modal-body bg-dark">
-                <form
-                  method="get"
-                  action="/papers/list-specific-paper/"
-                  class="form-group"
-                >
-                  {{ forms.0|crispy }}
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-info btn-block">
-                      Pesquisar
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% include 'DEIPaper/modal-search-paper.html' with form=forms.0 %}
       </div>
     </div>
     <div class="card bg-dark text-center">
@@ -89,29 +67,7 @@
           data-target="#ModalCreatePaper"
           >Adicionar publicação</a
         >
-        <div id="ModalCreatePaper" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-success">
-                <h4 class="modal-title text-xs-center">Criar Publicação</h4>
-              </div>
-              <div class="modal-body bg-dark">
-                <form
-                  method="post"
-                  action="/papers/create-paper/"
-                  class="form-group"
-                >
-                  {% csrf_token %} {{ forms.1|crispy }}
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-block">
-                      Criar
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% include 'DEIPaper/modal-create-paper.html' with form=forms.1 %}
       </div>
     </div>
   </div>
