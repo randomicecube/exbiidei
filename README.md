@@ -32,7 +32,7 @@ De seguida, poderá interagir com a aplicação através do browser, por exemplo
 
 ## Opções de desenho
 
-- Foi decidido implementar um aspeto _dark mode_ por definição - com mais tempo, teria interessado implementar um _toggle_ que permitisse ao utilizador escolher entre visuais _light_ e _dark_, mas a ideia foi abandonada.
+- Foi decidido implementar um aspeto _dark mode_ por definição - com mais tempo, teria sido interessante implementar um _toggle_ que permitisse ao utilizador escolher entre visuais _light_ e _dark_, mas a ideia foi abandonada.
 
 - Não foram colocadas as _views_ que permitem editar e eliminar publicações diretamente na _homepage_:
 
