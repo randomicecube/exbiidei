@@ -8,10 +8,7 @@ ISTPAPER_ENDPOINT = os.getenv(
   default="https://aduck.rnl.tecnico.ulisboa.pt/istpaper/papers"
 )
 
-AUTHENTICATION_TOKEN = os.getenv(
-  "AUTHENTICATION_TOKEN",
-  default="ist199207"
-)
+AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 
 PAGE_SIZE = 10
 
@@ -123,7 +120,7 @@ def create_paper(request):
     "logoUrl": logoUrl,
     "docUrl": docUrl
   }, headers={
-    "Authorization": "Bearer " + AUTHENTICATION_TOKEN
+    "Authorization": "Bearer " + AUTH_TOKEN
   })
 
   if response.status_code != 201:
@@ -158,7 +155,7 @@ def edit_paper(request):
     "logoUrl": logoUrl,
     "docUrl": docUrl
   }, headers={
-    "Authorization": "Bearer " + AUTHENTICATION_TOKEN
+    "Authorization": "Bearer " + AUTH_TOKEN
   })
 
   if response.status_code != 200:
@@ -182,7 +179,7 @@ def delete_paper(request):
     })
   
   response = requests.delete(ISTPAPER_ENDPOINT + "/" + paper_id, headers={
-    "Authorization": "Bearer " + AUTHENTICATION_TOKEN
+    "Authorization": "Bearer " + AUTH_TOKEN
   })
 
   return render(request, "DEIPaper/delete-paper.html", {
