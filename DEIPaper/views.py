@@ -103,6 +103,9 @@ def list_specific_paper(request):
   })
 
 def create_paper(request):
+  """
+  Renders the page which allows the user to create a new paper.
+  """
   title = request.POST.get("title")
   authors = request.POST.get("authors")
   abstract = request.POST.get("abstract")
@@ -136,6 +139,9 @@ def create_paper(request):
   })
 
 def edit_paper(request):
+  """
+  Renders the page shown after a user edits a paper.
+  """
   paper_id = request.POST.get("id", "")
   title = request.POST.get("title", "")
   authors = request.POST.get("authors", "")
@@ -171,6 +177,9 @@ def edit_paper(request):
   )
 
 def delete_paper(request):
+  """
+  Renders the page shown after a user deletes a paper.
+  """
   paper_id = request.GET.get("id")
   if not paper_id:
     return render(request, "DEIPaper/delete-paper.html", {

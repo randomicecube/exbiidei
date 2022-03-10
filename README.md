@@ -5,7 +5,7 @@
   - [Correr a aplicação](#correr-a-aplicação)
   - [Opções de desenho](#opções-de-desenho)
 
-Projeto realizado no âmbito da candidatura à BII BL039/2022, tendo como objetivo implementar um sistema muito simples de gestão de publicações científicas para o DEI, sistema esse ligado à API `ISTPaper`. Recorreu-se às _frameworks_ `django` e `bootstrap` para a modelação do sistema.
+Projeto realizado no âmbito da candidatura à BII BL039/2022, tendo como objetivo implementar um sistema muito simples de gestão de publicações científicas para o DEI, sistema esse ligado à API [ISTPaper](https://aduck.rnl.tecnico.ulisboa.pt/istpaper/swagger-ui/index.html). Recorreu-se às _frameworks_ `Django` e `bootstrap` para a modelação do sistema.
 
 ## Dependências
 
@@ -32,6 +32,8 @@ De seguida, poderá interagir com a aplicação através do browser, por exemplo
 
 ## Opções de desenho
 
+- Foi decidido implementar um aspeto _dark mode_ por definição - com mais tempo, teria interessado implementar um _toggle_ que permitisse ao utilizador escolher entre visuais _light_ e _dark_, mas a ideia foi abandonada.
+
 - Não foram colocadas as _views_ que permitem editar e eliminar publicações diretamente na _homepage_:
 
   - Editar publicações é possível através da página específica de cada publicação - desta forma, o utilizador pode facilmente ver todos os detalhes do _paper_ que pretende editar antes de o fazer, sendo porventura mais intuitivo do que um _form_ onde se permite editar qualquer _paper_ na _homepage_.
@@ -43,4 +45,3 @@ De seguida, poderá interagir com a aplicação através do browser, por exemplo
 - Foram utilizados [Modal Forms](https://getbootstrap.com/docs/4.3/components/modal/#varying-modal-content) em vez dos Forms padrão do `bootstrap`, com vista a evitar páginas cheias de formulários - um utilizador só vê um formulário quando diz que o quer ver (seja isso carregando num botão, aparecendo o tal Modal Form, ou quando o próprio formulário é todo o conteúdo da página).
 
 - A paginação não apresenta qualquer opção de filtragem e/ou ordenação, visto que da forma como a API `ISTPaper` é implementada, só é possível obter `limit` publicações por vez - ora, sem saber o limite de publicações existentes, não podemos pedi-las todas de forma a realizar essas operações, pelo que a ideia foi abandonada.
-

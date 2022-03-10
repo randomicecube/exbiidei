@@ -12,6 +12,8 @@ body {
   padding: 0;
 }
 
+/* ------ Home icon related styles ------ */
+
 .fa-home {
   transition: all 0.2s ease-in-out;
 }
@@ -20,7 +22,7 @@ body {
   color: rgb(76, 130, 131) !important;
 }
 
-/* General content related styles */
+/* ------ General content related styles ------ */
 
 .center-content-screen {
   display: flex;
@@ -42,6 +44,8 @@ body {
   height: 100px;
 }
 
+/* ------ Table (list-all-papers) related styles ------ */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -52,7 +56,6 @@ table {
   margin-top: 7.5vh;
   width: 70%;
   overflow-x: hidden !important;
-  /* rounded corners */
 }
 
 th,
@@ -66,7 +69,7 @@ td {
   font-size: 14px;
 }
 
-/* Homepage modal forms */
+/* ------ Homepage modal forms ------ */
 
 .modal-body {
   background-color: #1b1c1c;
@@ -97,7 +100,7 @@ td {
   -moz-border-radius-topright: 6px;
 }
 
-/* The code below aligns buttons in the homepage */
+/* ------ Aligning buttons ------ */
 
 .card-body {
   display: flex;
@@ -108,7 +111,7 @@ td {
   margin-top: auto;
 }
 
-/* Color changes for default bootstrap elements (gruvbox-ish style) */
+/* ------ Color changes for default bootstrap elements (gruvbox-ish style) ------ */
 
 .card {
   border-color: #363633 !important;
@@ -122,11 +125,22 @@ td {
   background-color: #363633 !important;
 }
 
+.btn,
+.btn-sm,
+.btn-lg {
+  transition: all 0.2s ease-in-out;
+}
+
 .btn-primary,
 .bg-primary {
   color: rgb(255, 250, 230) !important;
   background-color: rgb(56, 103, 152) !important;
   border-color: rgb(50, 91, 134) !important;
+}
+
+.btn-primary:hover {
+  background-color: rgb(60, 133, 211) !important;
+  border-color: rgb(55, 116, 182) !important;
 }
 
 .btn-danger,
@@ -136,11 +150,21 @@ td {
   border-color: rgb(118, 51, 52) !important;
 }
 
+.btn-danger:hover {
+  background-color: rgb(165, 59, 60) !important;
+  border-color: rgb(145, 58, 60) !important;
+}
+
 .btn-warning,
 .bg-warning {
   color: rgb(235, 224, 204) !important;
   background-color: rgb(197, 164, 73) !important;
   border-color: rgb(174, 145, 65) !important;
+}
+
+.btn-warning:hover {
+  background-color: rgb(222, 189, 103) !important;
+  border-color: rgb(209, 173, 83) !important;
 }
 
 .btn-info,
@@ -150,11 +174,21 @@ td {
   border-color: rgb(88, 150, 151) !important;
 }
 
+.btn-info:hover {
+  background-color: rgb(101, 194, 196) !important;
+  border-color: rgb(95, 167, 168) !important;
+}
+
 .btn-success,
 .bg-success {
   color: rgb(255, 250, 230) !important;
   background-color: rgb(81, 130, 81) !important;
   border-color: rgb(94, 151, 93) !important;
+}
+
+.btn-success:hover {
+  background-color: rgb(91, 163, 97) !important;
+  border-color: rgb(100, 170, 99) !important;
 }
 
 .alert-success {
@@ -188,5 +222,5 @@ td {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #666;
 }
