@@ -6,7 +6,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO - link below could be changed for a static icon/image -->
     <link
       rel="shortcut icon"
       href="https://rnl.tecnico.ulisboa.pt/favicon.png"
@@ -38,9 +37,11 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-    <title>DEIPaper</title>
+    {% block title %} {% endblock %}
   </head>
   {% endblock %} {% block body %}
-  <body></body>
+  <body>
+    {% block navbar %} {% endblock %} {% block content %} {% endblock %}
+  </body>
   {% endblock %}
 </html>

@@ -1,9 +1,10 @@
 {% extends 'DEIPaper/base.html' %}
 
-<!-- this page contains the navbar - didn't make sense to place it in index.html -->
-<!-- the navbar collapses to a hamburguer menu -->
+<!-- this page contains the navbar -->
+<!-- placed here instead of in base.html, to avoid its presence in the homepage -->
+<!-- the navbar collapses to a hamburguer menu in mobile/collapsed view -->
 
-{% block body %}
+{% block navbar %}
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
   <div class="container-fluid">
     <button
@@ -24,21 +25,20 @@
     <div class="collapse navbar-collapse" id="navbarToggler">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="/papers/list-all-papers"
-            ><i class="fa fa-list"></i> Listar Publicações</a
-          >
+          <a class="nav-link" href="/papers/list-all-papers">
+            <i class="fa fa-list"></i> Listar Publicações
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/papers/list-specific-paper"
-            ><i class="fa fa-search"></i> Pesquisar Publicação</a
-          >
+          <a class="nav-link" href="/papers/list-specific-paper">
+            <i class="fa fa-search"></i> Pesquisar Publicação
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/papers/create-paper"
-            ><i class="fa fa-plus-circle"></i> Adicionar Publicação</a
-          >
+          <a class="nav-link" href="/papers/create-paper">
+            <i class="fa fa-plus-circle"></i> Adicionar Publicação
+          </a>
         </li>
-        <!-- TODO - an "about" page which explains the general purpose of DEIPaper would be nice -->
       </ul>
     </div>
   </div>

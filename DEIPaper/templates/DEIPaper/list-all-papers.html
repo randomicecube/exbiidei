@@ -1,58 +1,48 @@
-{% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
+{% extends 'DEIPaper/navbar.html' %} {% load crispy_forms_tags %}
 
-<!-- this page should show a paged view of a given paged array of papers -->
-<!-- each paper should be collapsible: normally it should show authors and title -->
-<!-- in its detailed view, should also should the other information (just like in list-specific-paper) -->
-<!-- this view should be achieved via a table -->
-<!-- each page should contain **at most** 10 entries -->
-<!-- pagination should be implemented via django -->
+<!-- shows a paged view of the database's papers -->
 
-{% block head %}
-<link
-  rel="stylesheet"
-  href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"
-/>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<script>
-  $(document).ready(function () {
-    $("#list-all-papers-table").DataTable({
-      filter: false,
-      info: false,
-      paging: false,
-      ordering: false,
-    });
-  });
-</script>
-{% endblock %} {% block body %} {% if status_code == 200 %}
+{% block title %}
+
+<title>Publicações</title>
+
+{% endblock %}
+
+{% block content %}
+
+{% if status_code == 200 %}
 <div class="container">
   <div class="row py-5">
     <div class="col-lg-10 mx-auto">
       <div class="card rounded-lg shadow-lg border-0">
         <div class="card-body p-4 bg-dark rounded">
-          <!-- add a button group with a previous and next page button -->
           <div class="btn-group">
             {% with first_paper=papers|first last_paper=papers|last %}
-            <!-- buttons only displayed if prev and/or next page exist -->
+            <!-- prev/next only displayed if prev and/or next page actually exist -->
             {% if prev_page %}
             <a
-              href="/papers/list-all-papers/?page={{page}}&prev=1"
+              href="/papers/list-all-papers/?page={{ page }}&prev=1"
               class="btn btn-primary btn-block"
-              >Página anterior</a
             >
-            {% endif %} {% if next_page %}
+              Página anterior
+            </a>
+            {% endif %} 
+            {% if next_page %}
             <a
-              href="/papers/list-all-papers/?page={{page}}&prev=0"
+              href="/papers/list-all-papers/?page={{ page }}&prev=0"
               class="btn btn-primary btn-block"
-              >Próxima página</a
             >
-            {% endif %} {% endwith %}
+             Próxima página
+            </a>
+            {% endif %}
+            {% endwith %}
           </div>
+
           <hr class="my-2" />
           <div class="table-responsive">
             <table
               id="list-all-papers-table"
-              class="table table-striped text-white text-center"
+              class="table text-white text-center"
             >
               <thead>
                 <tr>
@@ -83,8 +73,9 @@
                     <a
                       href="/papers/list-specific-paper/?id={{ paper.id }}"
                       class="btn-sm btn-info"
-                      >Consultar</a
                     >
+                     Consultar
+                    </a>
                   </td>
                   <td>
                     <a
@@ -92,8 +83,9 @@
                       class="btn-sm btn-danger"
                       data-toggle="modal"
                       data-target="#ModalDeletePaper"
-                      >Remover</a
                     >
+                     Remover
+                    </a>
                     <div id="ModalDeletePaper" class="modal fade">
                       <div class="modal-dialog">
                         <div class="modal-content">
@@ -104,15 +96,13 @@
                           </div>
                           <div class="modal-body bg-dark">
                             <p>
-                              <b
-                                >Tem a certeza que pretende apagar esta
-                                publicação?</b
-                              >
+                              <b>
+                                Tem a certeza que pretende apagar esta publicação?
+                              </b>
                             </p>
                             <p>
                               Como medida de segurança adicional, insira abaixo
-                              o
-                              <i>ID</i> da publicação que pretende remover.
+                              o <i>ID</i> da publicação que pretende remover.
                             </p>
                             <form
                               method="delete"
@@ -168,21 +158,11 @@
   <div class="row justify-content-center">
     <div class="col-sm-6 text-center">
       <div class="card-deck">
-        <div class="card bg-dark text-center">
-          <div class="card-body">
-            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
-            <a
-              href="/"
-              class="btn btn-primary btn-block"
-              style="margin-top: auto"
-            >
-              <i class="fa fa-home"></i>
-              Voltar para a página inicial
-            </a>
-          </div>
-        </div>
+        {% include 'DEIPaper/back-to-home.html' %}
       </div>
     </div>
   </div>
 </div>
-{% endif %} {% endblock %}
+{% endif %}
+
+{% endblock %}

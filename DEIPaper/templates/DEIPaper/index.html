@@ -1,4 +1,15 @@
-{% extends 'DEIPaper/base.html' %} {% load crispy_forms_tags %} {% block body %}
+{% include 'DEIPaper/base.html' %} {% load crispy_forms_tags %}
+
+<!-- homepage -->
+
+{% block title %}
+
+<title>DEIPaper</title>
+
+{% endblock %} 
+
+{% block body %}
+
 <div
   style="background: var(--background) !important"
   class="jumbotron center-content-screen"
@@ -19,7 +30,7 @@
   <hr class="my-3" />
 
   <a href="/papers/list-all-papers" class="btn btn-lg">
-    <div class="card bg-primary text-white">
+    <div class="card bg-white text-dark">
       <div class="card-body">
         <h4 class="card-title"><b>Listagem de Publicações</b></h4>
       </div>
@@ -52,7 +63,7 @@
                   action="/papers/list-specific-paper/"
                   class="form-group"
                 >
-                  {{forms.0|crispy}}
+                  {{ forms.0|crispy }}
                   <div class="form-group">
                     <button type="submit" class="btn btn-info btn-block">
                       Pesquisar
@@ -90,7 +101,7 @@
                   action="/papers/create-paper/"
                   class="form-group"
                 >
-                  {% csrf_token %} {{forms.1|crispy}}
+                  {% csrf_token %} {{ forms.1|crispy }}
                   <div class="form-group">
                     <button type="submit" class="btn btn-success btn-block">
                       Criar
@@ -105,4 +116,5 @@
     </div>
   </div>
 </div>
+
 {% endblock %}

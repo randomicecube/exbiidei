@@ -1,22 +1,35 @@
-{% include 'DEIPaper/util-layout.html' %}
+{% extends 'DEIPaper/navbar.html' %}
 <!-- edit paper page -->
 
-{% load crispy_forms_tags %} {% block body %}
+{% load crispy_forms_tags %} {% block title %}
+
+<title>Editar publicação</title>
+
+{% endblock %} {% block content %}
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-sm-8 text-center">
-      <div class="alert alert-danger" role="alert">
+      {% if status_code == 201 %}
+      <div class="alert alert-success" role="alert">
         <h1 class="alert-heading">
-          <!-- success -->
-          {% if status_code == 200 %} A publicação foi editada com sucesso.
-          <!-- error codes -->
-          {% elif status_code == 400 %} A publicação que tentou editar é
-          inválida. {% elif status_code == 403 %} Não tem permissão para editar
-          a publicação. {% elif status_code == 404 %} A publicação que tentou
-          editar não existe. {% else %} Ocorreu um erro ao tentar editar a
-          publicação. {% endif %}
+          A publicação foi editada com sucesso!
         </h1>
       </div>
+      {% else %}
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          {% if status_code == 400 %}
+          A publicação que tentou editar é inválida.
+          {% elif status_code == 403 %}
+          Não tem permissão para editar a publicação.
+          {% elif status_code == 404 %}
+          A publicação que tentou editar não existe.
+          {% else %}
+          Ocorreu um erro ao tentar editar a publicação.
+          {% endif %}
+        </h1>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -25,19 +38,7 @@
   <div class="row justify-content-center">
     <div class="col-sm-6 text-center">
       <div class="card-deck">
-        <div class="card bg-dark text-center">
-          <div class="card-body">
-            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
-            <a
-              href="/"
-              class="btn btn-primary btn-block"
-              style="margin-top: auto"
-            >
-              <i class="fa fa-home"></i>
-              Voltar para a página inicial
-            </a>
-          </div>
-        </div>
+        {% include 'DEIPaper/back-to-home.html' %}
       </div>
     </div>
   </div>

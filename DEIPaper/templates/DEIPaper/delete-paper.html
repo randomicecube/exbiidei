@@ -1,21 +1,39 @@
-{% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
-<!-- delete paper page -->
-{% block body %}
+{% extends 'DEIPaper/navbar.html' %} {% load crispy_forms_tags %}
+
+<!-- page shown after a user deletes a paper -->
+
+{% block title %}
+
+<title>Eliminar publicação</title>
+
+{% endblock %}
+
+{% block content %}
+
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-sm-8 text-center">
-      <div class="alert alert-danger" role="alert">
+      {% if status_code == 201 %}
+      <div class="alert alert-success" role="alert">
         <h1 class="alert-heading">
-          <!-- success -->
-          {% if status_code == 204 %} A publicação foi eliminada com sucesso.
-          <!-- error codes -->
-          {%elif status_code == 400 %} A publicação que tentou eliminar é
-          inválida. {% elif status_code == 401 or status_code == 403 %} Não tem
-          permissão para eliminar a publicação. {% elif status_code == 404 %} A
-          publicação que tentou eliminar não existe. {% else %} Ocorreu um erro
-          ao tentar eliminar a publicação. {% endif %}
+          A publicação foi eliminada com sucesso!
         </h1>
       </div>
+      {% else %}
+      <div class="alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+          {% if status_code == 400 %}
+          A publicação que tentou eliminar é inválida.
+          {% elif status_code == 401 or status_code == 403 %}
+          Não tem permissão para eliminar a publicação.
+          {% elif status_code == 404 %}
+          A publicação que tentou eliminar não existe.
+          {% else %}
+          Ocorreu um erro ao tentar eliminar a publicação.
+          {% endif %}
+        </h1>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -23,21 +41,10 @@
   <div class="row justify-content-center">
     <div class="col-sm-6 text-center">
       <div class="card-deck">
-        <div class="card bg-dark text-center">
-          <div class="card-body">
-            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
-            <a
-              href="/"
-              class="btn btn-primary btn-block"
-              style="margin-top: auto"
-            >
-              <i class="fa fa-home"></i>
-              Voltar para a página inicial
-            </a>
-          </div>
-        </div>
+        {% include 'DEIPaper/back-to-home.html' %}
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %}

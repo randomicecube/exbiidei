@@ -1,12 +1,20 @@
-{% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
+{% extends 'DEIPaper/navbar.html' %} {% load crispy_forms_tags %}
 
-<!-- TODO - change title for the paper's title -->
+<!-- shows the detailed view of a given paper -->
 
-<!-- this page will list all the information about a given paper (coming from views via "paper") -->
+{% block title %}
 
-{% block body %} {% if direct_access %}
-<!-- the user entered the page directly -->
-<!-- creates a div with a form requesting a paper's id -->
+<title>
+  {% if not direct_access %} {{ response.title }} {% else %} Pesquisar publicação
+  {% endif %}
+</title>
+
+{% endblock %}
+
+{% block content %}
+
+{% if direct_access %}
+<!-- the user entered the page directly (without filling a form) -->
 <div class="container py-5">
   <div class="row">
     <div class="col-md-8 mx-auto">
@@ -38,34 +46,32 @@
 </div>
 
 {% elif status_code == 200 %}
-<!-- all good -->
+<!-- paper can be displayed (no errors found) -->
 <div class="container py-5 text-center" id="error-page-content">
   <div class="row">
     <div class="row-lg-10 mx-auto">
       <blockquote
         class="blockquote blockquote-custom bg-dark p-5 shadow rounded"
       >
-        <!-- place the logo (via img with logoUrl) if it exists in the top right corner of the div -->
         {% if response.logoUrl != "" %}
-        <!-- the logo should be in the top right -->
         <img
-          src="{{response.logoUrl}}"
+          src="{{ response.logoUrl }}"
           class="img-fluid rounded mx-auto d-block float-right"
           alt="logo"
           style="max-height: 50px; max-width: 100px; margin-top: -20px"
         />
         {% endif %}
         <h4 class="mb-0 mt-2">
-          <b><i>#{{response.id}}</i> - {{response.title}}</b>
+          <b><i>#{{ response.id }}</i> - {{ response.title }}</b>
         </h4>
-        <p class="mb-0 mt-2 font-italic">{{response.abstract}}</p>
+        <p class="mb-0 mt-2 font-italic">{{ response.abstract }}</p>
         <footer class="blockquote-footer pt-4 mt-4 border-top">
-          <cite>{{response.authors}}</cite>
+          <cite>{{ response.authors }}</cite>
           {% if response.docUrl %}
           <hr />
           <p>
             O documento completo pode ser encontrado
-            <a href="{{response.docUrl}}">aqui</a>.
+            <a href="{{ response.docUrl }}">aqui</a>.
           </p>
           {% endif %}
         </footer>
@@ -74,16 +80,15 @@
   </div>
 </div>
 
-<!-- show a card asking whether the user wants to edit the specific paper -->
-<!-- if so, he clicks it and a modal forms pops up, asking for the details -->
+<!-- Card deck containing options for the user to choose -->
 <div
+  class="jumbotron"
   style="
     background: var(--background) !important;
     display: flex;
     flex-direction: column;
     align-items: center;
   "
-  class="jumbotron"
 >
   <div class="card-deck">
     <div class="card bg-dark text-center">
@@ -98,8 +103,8 @@
           data-toggle="modal"
           data-target="#ModalListSpecificPaper"
           style="margin-top: auto"
-          >Consultar publicação</a
-        >
+          >Consultar publicação
+        </a>
         <div id="ModalListSpecificPaper" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -112,7 +117,7 @@
                   action="/papers/list-specific-paper/"
                   class="form-group"
                 >
-                  {{forms.0|crispy}}
+                  {{ forms.0|crispy }}
                   <div class="form-group">
                     <button type="submit" class="btn btn-info btn-block">
                       Pesquisar
@@ -137,8 +142,8 @@
           data-toggle="modal"
           data-target="#ModalEditPaper"
           style="margin-top: auto"
-          >Editar publicação</a
-        >
+          >Editar publicação
+        </a>
         <div id="ModalEditPaper" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -151,7 +156,7 @@
                   action="/papers/edit-paper/"
                   class="form-group"
                 >
-                  {% csrf_token %} {{forms.1|crispy}}
+                  {% csrf_token %} {{ forms.1|crispy }}
                   <div class="form-group">
                     <button type="submit" class="btn btn-warning btn-block">
                       Editar
@@ -176,8 +181,8 @@
           data-toggle="modal"
           data-target="#ModalDeletePaper"
           style="margin-top: auto"
-          >Apagar publicação</a
-        >
+          >Apagar publicação
+        </a>
         <div id="ModalDeletePaper" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -197,7 +202,7 @@
                   action="/papers/delete-paper/"
                   class="form-group"
                 >
-                  {% csrf_token %} {{forms.2|crispy}}
+                  {% csrf_token %} {{ forms.2|crispy }}
                   <div class="form-group">
                     <p>
                       <i class="fa fa-exclamation-triangle"></i>
@@ -227,10 +232,13 @@
     <div class="col-sm-8 text-center">
       <div class="alert alert-danger" role="alert">
         <h1 class="alert-heading">
-          {% if status_code == 400 %} A publicação que tentou procurar é
-          inválida. {% elif status_code == 404 %} A publicação que tentou
-          procurar não existe. {% else %} Ocorreu um erro ao tentar procurar a
-          publicação. {% endif %}
+          {% if status_code == 400 %}
+          A publicação que tentou procurar é inválida.
+          {% elif status_code == 404 %}
+          A publicação que tentou procurar não existe.
+          {% else %}
+          Ocorreu um erro ao tentar procurar a publicação.
+          {% endif %}
         </h1>
       </div>
     </div>
@@ -241,19 +249,7 @@
   <div class="row justify-content-center">
     <div class="col-sm-6 text-center">
       <div class="card-deck">
-        <div class="card bg-dark text-center">
-          <div class="card-body">
-            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
-            <a
-              href="/"
-              class="btn btn-primary btn-block"
-              style="margin-top: auto"
-            >
-              <i class="fa fa-home"></i>
-              Voltar para a página inicial
-            </a>
-          </div>
-        </div>
+        {% include 'DEIPaper/back-to-home.html' %}
       </div>
     </div>
   </div>

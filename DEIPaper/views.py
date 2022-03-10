@@ -3,8 +3,8 @@ import requests, os
 from .forms import ListSpecificPaperForm, CreatePaperForm, EditPaperForm, DeletePaperForm
 from django.http import HttpRequest
 
-PAPERS_ENDPOINT = os.getenv(
-  "PAPERS_ENDPOINT",
+ISTPAPER_ENDPOINT = os.getenv(
+  "ISTPAPER_ENDPOINT",
   default="https://aduck.rnl.tecnico.ulisboa.pt/istpaper/papers"
 )
 
@@ -16,6 +16,9 @@ AUTHENTICATION_TOKEN = os.getenv(
 PAGE_SIZE = 10
 
 def index(request):
+  """
+  Renders the homepage.
+  """
   return render(request, "DEIPaper/index.html", {
     "forms": [
       ListSpecificPaperForm(),
@@ -25,17 +28,17 @@ def index(request):
 
 def list_all_papers(request):
   """
-  Lists all papers.
-  IMPORTANT NOTE: we always request PAGE_SIZE+1 papers, so that we can check if there is a next page to be displayed or not.
+  Renders the page with a listing of all the papers stored in the database.
   """
   prev_page_clicked = request.GET.get("prev")
   page = int(request.GET.get("page", "0"))
 
   # prev_page_button/next_page_button:
-  # if in the rendered page, we have to display the prev/next page button
+  # represent whether in the rendered page, we have to display the prev/next page button
   prev_page_button = False
   next_page_button = False
 
+  # note: we consider limit as PAGE_SIZE + 1 so we can check if there's a next page
   limit = PAGE_SIZE + 1
 
   if page == 0:
@@ -54,7 +57,7 @@ def list_all_papers(request):
       if offset > 0:
         prev_page_button = True
 
-  response = requests.get(PAPERS_ENDPOINT, params={
+  response = requests.get(ISTPAPER_ENDPOINT, params={
     'limit': limit,
     'offset': offset,
   })
@@ -77,16 +80,16 @@ def list_all_papers(request):
 
 def list_specific_paper(request):
   """
-  Lists a specific paper.
+  Renders the page which lists detailed information about a specific paper.
   """
   paper_id = request.GET.get("id")
-  if not paper_id:
+  if not paper_id: # user accessed the URL directly, not filling a form
     return render(request, "DEIPaper/list-specific-paper.html", {
       "form": ListSpecificPaperForm(),
       "direct_access": True,
     })
   
-  response = requests.get(PAPERS_ENDPOINT + "/" + paper_id)
+  response = requests.get(ISTPAPER_ENDPOINT + "/" + paper_id)
   if response.status_code != 200:
     return render(request, "DEIPaper/list-specific-paper.html", {
       "status_code": response.status_code,
@@ -108,13 +111,12 @@ def create_paper(request):
   abstract = request.POST.get("abstract")
   logoUrl = request.POST.get("logoUrl", "")
   docUrl = request.POST.get("docUrl", "")
-  if not title: #user accessed the URL directly, not filling a form
+  if not title: # user accessed the URL directly, not filling a form
     return render(request, "DEIPaper/create-paper.html", {
       "form": CreatePaperForm(),
       "direct_access": True,
     })
-  # TODO - CLEANED DATA
-  response = requests.post(PAPERS_ENDPOINT, json={
+  response = requests.post(ISTPAPER_ENDPOINT, json={
     "title": title,
     "authors": authors,
     "abstract": abstract,
@@ -143,13 +145,13 @@ def edit_paper(request):
   abstract = request.POST.get("abstract", "")
   logoUrl = request.POST.get("logoUrl", "")
   docUrl = request.POST.get("docUrl", "")
-  if not paper_id:
+  if not paper_id: # user accessed the URL directly, not filling a form
     return render(request, "DEIPaper/edit-paper.html", {
       "form": EditPaperForm(request.GET),
       "direct_access": True
     })
   
-  response = requests.put(PAPERS_ENDPOINT + "/" + paper_id, json={
+  response = requests.put(ISTPAPER_ENDPOINT + "/" + paper_id, json={
     "title": title,
     "authors": authors,
     "abstract": abstract,
@@ -179,7 +181,7 @@ def delete_paper(request):
       "direct_access": True,
     })
   
-  response = requests.delete(PAPERS_ENDPOINT + "/" + paper_id, headers={
+  response = requests.delete(ISTPAPER_ENDPOINT + "/" + paper_id, headers={
     "Authorization": "Bearer " + AUTHENTICATION_TOKEN
   })
 

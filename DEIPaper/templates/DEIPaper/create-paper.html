@@ -1,13 +1,20 @@
-{% include 'DEIPaper/util-layout.html' %} {% load crispy_forms_tags %}
-<!-- will contain the create paper page -->
-{% block body %}
+{% extends 'DEIPaper/navbar.html' %} {% load crispy_forms_tags %}
 
-<!-- if the response's status code is 201, create a success page with a green check in the middle -->
-<!-- otherwise, create an error page with a red cross in the middle and a redirect button to the homepage -->
+<!-- lets the user add a paper to the database -->
+
+{% block title %}
+
+<title>
+  Criar publicação
+</title>
+
+{% endblock %}
+
+{% block content %}
 
 {% if direct_access %}
 <!-- the user entered the page directly -->
-<!-- creates a div with a form for adding a new paper -->
+<!-- gives the user a form for adding a new paper -->
 <div class="container py-5">
   <div class="row">
     <div class="col-md-8 mx-auto">
@@ -37,34 +44,32 @@
   </div>
 </div>
 {% else %}
+<!-- the user got to fill a form before getting here -->
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-sm-8 text-center">
       {% if status_code == 201 %}
       <div class="alert alert-success" role="alert">
-        <h1 class="alert-heading">A publicação foi adicionada com sucesso!</h1>
+        <h1 class="alert-heading">
+          A publicação foi adicionada com sucesso!
+        </h1>
       </div>
       {% else %}
       <div class="alert alert-danger" role="alert">
-        {% if status_code == 400 %}
         <h1 class="alert-heading">
+          {% if status_code == 400 %}
           A publicação que tentou adicionar é inválida.
-        </h1>
-        {% elif status_code == 401 %}
-        <h1 class="alert-heading">
+          {% elif status_code == 401 %}
           Não tem permissão para adicionar a publicação.
-        </h1>
-        {% else %}
-        <h1 class="alert-heading">
+          {% else %}
           Ocorreu um erro ao tentar adicionar a publicação.
-        </h1>
-        {% endif %}
+          {% endif %}
       </div>
       {% endif %}
       </div>
     </div>
   </div>
-  <!-- show a container with a card deck with options to add a new publication or go back to the homepage -->
+  <!-- lets the user add a new publication or go back to the homepage -->
   <div class="container py-2">
     <div class="row justify-content-center">
       <div class="col-sm-10 text-center">
@@ -81,8 +86,9 @@
                 data-toggle="modal"
                 data-target="#ModalCreatePaper"
                 style="margin-top: auto"
-                ><i class="fa fa-plus-circle"></i> Adicionar publicação</a
               >
+                <i class="fa fa-plus-circle"></i> Adicionar publicação
+              </a>
               <div id="ModalCreatePaper" class="modal fade">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -97,7 +103,7 @@
                         action="/papers/create-paper/"
                         class="form-group"
                       >
-                        {% csrf_token %} {{form|crispy}}
+                        {% csrf_token %} {{ form|crispy }}
                         <div class="form-group">
                           <button
                             type="submit"
@@ -113,19 +119,7 @@
               </div>
             </div>
           </div>
-          <div class="card bg-dark text-center">
-            <div class="card-body">
-              <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
-              <a
-                href="/"
-                class="btn btn-primary btn-block"
-                style="margin-top: auto"
-              >
-                <i class="fa fa-home"></i>
-                Voltar para a página inicial
-              </a>
-            </div>
-          </div>
+          {% include 'DEIPaper/back-to-home.html' %}
           {% if status_code == 201 %}
           <!-- if a paper was added, allow the user to check it out -->
           <div class="card bg-dark text-center">
@@ -150,4 +144,6 @@
     </div>
   </div>
 </div>
-{% endif %} {% endblock %}
+{% endif %}
+
+{% endblock %}
