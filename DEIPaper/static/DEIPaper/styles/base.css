@@ -12,28 +12,22 @@ body {
   padding: 0;
 }
 
-#dei-icon {
-  width: 300px;
-  height: 100px;
-}
-
-.center-content-screen {
-  /* center elements */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .fa-home {
   transition: all 0.2s ease-in-out;
 }
 
 .fa-home:hover {
-  color: cornflowerblue !important;
+  color: rgb(76, 130, 131) !important;
 }
 
 /* General content related styles */
+
+.center-content-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 #list-papers-content {
   margin-top: 50px;
@@ -41,6 +35,11 @@ body {
 
 #home-page-content {
   height: 95vh;
+}
+
+#dei-icon {
+  width: 300px;
+  height: 100px;
 }
 
 table {
