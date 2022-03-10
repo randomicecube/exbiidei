@@ -36,13 +36,13 @@
             <!-- buttons only displayed if prev and/or next page exist -->
             {% if prev_page %}
             <a
-              href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=1"
+              href="/papers/list-all-papers/?page={{page}}&prev=1"
               class="btn btn-primary btn-block"
               >Página anterior</a
             >
             {% endif %} {% if next_page %}
             <a
-              href="/papers/list-all-papers/?first_id={{ first_paper.id }}&last_id={{ last_paper.id }}&prev=0"
+              href="/papers/list-all-papers/?page={{page}}&prev=0"
               class="btn btn-primary btn-block"
               >Próxima página</a
             >
@@ -97,12 +97,23 @@
                     <div id="ModalDeletePaper" class="modal fade">
                       <div class="modal-dialog">
                         <div class="modal-content">
-                          <div class="modal-header bg-primary">
-                            <h4 class="modal-title text-xs-center">
+                          <div class="modal-header bg-danger">
+                            <h4 class="modal-title text-center">
                               Remover Publicação
                             </h4>
                           </div>
                           <div class="modal-body bg-dark">
+                            <p>
+                              <b
+                                >Tem a certeza que pretende apagar esta
+                                publicação?</b
+                              >
+                            </p>
+                            <p>
+                              Como medida de segurança adicional, insira abaixo
+                              o
+                              <i>ID</i> da publicação que pretende remover.
+                            </p>
                             <form
                               method="delete"
                               action="/papers/delete-paper/"
@@ -110,12 +121,6 @@
                             >
                               {% csrf_token %} {{ form|crispy }}
                               <div class="form-group">
-                                <!-- ask if the user is sure about removing the paper -->
-                                <p class="text-xs-center">
-                                  Como medida de segurança adicional, insira
-                                  acima o <i>ID</i> da publicação que deseja
-                                  remover.
-                                </p>
                                 <p>
                                   <i class="fa fa-exclamation-triangle"></i>
                                   <b>

@@ -5,17 +5,24 @@
 <!-- if the response's status code is 201, create a success page with a green check in the middle -->
 <!-- otherwise, create an error page with a red cross in the middle and a redirect button to the homepage -->
 
-{% if not response %}
+{% if direct_access %}
 <!-- the user entered the page directly -->
-<!-- creates a div with a form for a new paper -->
+<!-- creates a div with a form for adding a new paper -->
 <div class="container py-5">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8 mx-auto">
       <div class="card bg-dark text-center">
         <div class="card-header">
           <h3 class="card-title">Adicionar Publicação</h3>
         </div>
         <div class="card-body">
+          <p class="card-text">
+            Nesta secção poderá adicionar uma nova publicação à base de dados do DEI.
+          </p>
+          <p class="card-text">
+            <b>Adicionar uma publicação não é uma operação definitiva</b>: poderá sempre alterá-la e/ou removê-la no futuro,
+            caso assim entenda.
+          </p>
           <form method="post" action="/papers/create-paper/" class="form-group">
             {% csrf_token %} {{ form|crispy }}
             <div class="form-group">
@@ -29,135 +36,118 @@
     </div>
   </div>
 </div>
-{% else %} {% if status_code == 201 %}
+{% else %}
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-sm-8 text-center">
+      {% if status_code == 201 %}
       <div class="alert alert-success" role="alert">
         <h1 class="alert-heading">A publicação foi adicionada com sucesso!</h1>
       </div>
-    </div>
-  </div>
-</div>
-{% elif status_code == 400 %}
-<!-- invalid paper submitted -->
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-sm-8 text-center">
+      {% else %}
       <div class="alert alert-danger" role="alert">
+        {% if status_code == 400 %}
         <h1 class="alert-heading">
           A publicação que tentou adicionar é inválida.
         </h1>
-      </div>
-    </div>
-  </div>
-</div>
-{% elif status_code == 401 %}
-<!-- unauthorized -->
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-sm-8 text-center">
-      <div class="alert alert-danger" role="alert">
+        {% elif status_code == 401 %}
         <h1 class="alert-heading">
           Não tem permissão para adicionar a publicação.
         </h1>
-      </div>
-    </div>
-  </div>
-</div>
-{% else %}
-<!-- unknown error -->
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-sm-8 text-center">
-      <div class="alert alert-danger" role="alert">
+        {% else %}
         <h1 class="alert-heading">
           Ocorreu um erro ao tentar adicionar a publicação.
         </h1>
+        {% endif %}
+      </div>
+      {% endif %}
       </div>
     </div>
   </div>
-</div>
-{% endif %}
-<!-- show a container with a card deck with options to add a new publication or go back to the homepage -->
-<div class="container py-2">
-  <div class="row justify-content-center">
-    <div class="col-sm-10 text-center">
-      <div class="card-deck">
-        <div class="card bg-dark text-center">
-          <div class="card-body">
-            <h4 class="card-title"><b>Criar Publicação</b></h4>
-            <p class="card-text">
-              Adicionar uma publicação à base de dados do DEI.
-            </p>
-            <a
-              href="/papers/create-paper"
-              class="btn btn-success"
-              data-toggle="modal"
-              data-target="#ModalCreatePaper"
-              style="margin-top: auto"
-              ><i class="fa fa-plus-circle"></i> Adicionar publicação</a
-            >
-            <div id="ModalCreatePaper" class="modal fade">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header bg-primary">
-                    <h4 class="modal-title text-xs-center">Criar Publicação</h4>
-                  </div>
-                  <div class="modal-body bg-dark">
-                    <form
-                      method="post"
-                      action="/papers/create-paper/"
-                      class="form-group"
-                    >
-                      {% csrf_token %} {{form|crispy}}
-                      <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-block">
-                          Criar
-                        </button>
-                      </div>
-                    </form>
+  <!-- show a container with a card deck with options to add a new publication or go back to the homepage -->
+  <div class="container py-2">
+    <div class="row justify-content-center">
+      <div class="col-sm-10 text-center">
+        <div class="card-deck">
+          <div class="card bg-dark text-center">
+            <div class="card-body">
+              <h4 class="card-title"><b>Criar Publicação</b></h4>
+              <p class="card-text">
+                Adicionar uma publicação à base de dados do DEI.
+              </p>
+              <a
+                href="/papers/create-paper"
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#ModalCreatePaper"
+                style="margin-top: auto"
+                ><i class="fa fa-plus-circle"></i> Adicionar publicação</a
+              >
+              <div id="ModalCreatePaper" class="modal fade">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-success">
+                      <h4 class="modal-title text-xs-center">
+                        Criar Publicação
+                      </h4>
+                    </div>
+                    <div class="modal-body bg-dark">
+                      <form
+                        method="post"
+                        action="/papers/create-paper/"
+                        class="form-group"
+                      >
+                        {% csrf_token %} {{form|crispy}}
+                        <div class="form-group">
+                          <button
+                            type="submit"
+                            class="btn btn-success btn-block"
+                          >
+                            Criar
+                          </button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="card bg-dark text-center">
-          <div class="card-body">
-            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
-            <a
-              href="/"
-              class="btn btn-primary btn-block"
-              style="margin-top: auto"
-            >
-              <i class="fa fa-home"></i>
-              Voltar para a página inicial
-            </a>
+          <div class="card bg-dark text-center">
+            <div class="card-body">
+              <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
+              <a
+                href="/"
+                class="btn btn-primary btn-block"
+                style="margin-top: auto"
+              >
+                <i class="fa fa-home"></i>
+                Voltar para a página inicial
+              </a>
+            </div>
           </div>
-        </div>
-        {% if status_code == 201 %}
-        <!-- if a paper was added, allow the user to check it out -->
-        <div class="card bg-dark text-center">
-          <div class="card-body">
-            <h4 class="card-title"><b>Consultar Publicação</b></h4>
-            <p class="card-text">
-              Consulte aqui a publicação que acabou de adicionar.
-            </p>
-            <a
-              href="/papers/list-specific-paper/?id={{ response.id }}"
-              class="btn btn-info btn-block"
-              style="margin-top: auto"
-            >
-              <i class="fa fa-search"></i>
-              Consultar
-            </a>
+          {% if status_code == 201 %}
+          <!-- if a paper was added, allow the user to check it out -->
+          <div class="card bg-dark text-center">
+            <div class="card-body">
+              <h4 class="card-title"><b>Consultar Publicação</b></h4>
+              <p class="card-text">
+                Consulte aqui a publicação que acabou de adicionar.
+              </p>
+              <a
+                href="/papers/list-specific-paper/?id={{ response.id }}"
+                class="btn btn-info btn-block"
+                style="margin-top: auto"
+              >
+                <i class="fa fa-search"></i>
+                Consultar
+              </a>
+            </div>
           </div>
+          {% endif %}
         </div>
-        {% endif %}
       </div>
     </div>
   </div>
 </div>
-
 {% endif %} {% endblock %}

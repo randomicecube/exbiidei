@@ -4,17 +4,21 @@
 
 <!-- this page will list all the information about a given paper (coming from views via "paper") -->
 
-{% block body %} {% if not response %}
+{% block body %} {% if direct_access %}
 <!-- the user entered the page directly -->
 <!-- creates a div with a form requesting a paper's id -->
 <div class="container py-5">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8 mx-auto">
       <div class="card bg-dark text-center">
         <div class="card-header">
           <h3 class="card-title">Pesquisar Publicação</h3>
         </div>
         <div class="card-body">
+          <p class="card-text">
+            Nesta secção poderá pesquisar uma publicação existente na base de
+            dados do DEI.
+          </p>
           <form
             method="get"
             action="/papers/list-specific-paper/"
@@ -99,7 +103,7 @@
         <div id="ModalListSpecificPaper" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header bg-primary">
+              <div class="modal-header bg-info">
                 <h4 class="modal-title text-xs-center">Pesquisar Publicação</h4>
               </div>
               <div class="modal-body bg-dark">
@@ -138,7 +142,7 @@
         <div id="ModalEditPaper" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header bg-primary">
+              <div class="modal-header bg-warning text-dark">
                 <h4 class="modal-title text-xs-center">Editar Publicação</h4>
               </div>
               <div class="modal-body bg-dark">
@@ -177,7 +181,7 @@
         <div id="ModalDeletePaper" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header bg-primary">
+              <div class="modal-header bg-danger">
                 <h4 class="modal-title text-xs-center">Apagar Publicação</h4>
               </div>
               <div class="modal-body bg-dark">
@@ -216,57 +220,40 @@
   </div>
 </div>
 
-{% elif status_code == 400 %}
-<!-- invalid paper ID -->
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-danger" role="alert">
-        <h1 class="alert-heading">
-          O ID da publicação que tentou adicionar é inválido.
-        </h1>
-        <p>
-          <a href="/papers/list-all-papers" class="btn btn-danger">
-            <i class="fa fa-arrow-left"></i>
-            Voltar para a lista de publicações
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-{% elif status_code == 404 %}
-<!-- paper not found -->
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="alert alert-danger" role="alert">
-        <h1 class="alert-heading">
-          A publicação que tentou adicionar não foi encontrada.
-        </h1>
-        <p>
-          <a href="/papers/list-all-papers" class="btn btn-danger">
-            <i class="fa fa-arrow-left"></i>
-            Voltar para a lista de publicações
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
 {% else %}
-<!-- unknown error -->
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-sm-8 text-center">
       <div class="alert alert-danger" role="alert">
-        <h1 class="alert-heading">Ocorreu um erro.</h1>
-        <p>
-          <a href="/papers/list-all-papers" class="btn btn-danger">
-            <i class="fa fa-arrow-left"></i>
-            Voltar para a lista de publicações
-          </a>
-        </p>
+        <h1 class="alert-heading">
+          {% if status_code == 400 %} A publicação que tentou procurar é
+          inválida. {% elif status_code == 404 %} A publicação que tentou
+          procurar não existe. {% else %} Ocorreu um erro ao tentar procurar a
+          publicação. {% endif %}
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-2">
+  <div class="row justify-content-center">
+    <div class="col-sm-6 text-center">
+      <div class="card-deck">
+        <div class="card bg-dark text-center">
+          <div class="card-body">
+            <h4 class="card-title"><b>Voltar para a página inicial</b></h4>
+            <a
+              href="/"
+              class="btn btn-primary btn-block"
+              style="margin-top: auto"
+            >
+              <i class="fa fa-home"></i>
+              Voltar para a página inicial
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
