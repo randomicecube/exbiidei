@@ -2,13 +2,12 @@ from django.shortcuts import render
 import requests, os
 from .forms import ListSpecificPaperForm, CreatePaperForm, EditPaperForm, DeletePaperForm
 from django.http import HttpRequest
+from django.conf import settings
 
 ISTPAPER_ENDPOINT = os.getenv(
   "ISTPAPER_ENDPOINT",
   default="https://aduck.rnl.tecnico.ulisboa.pt/istpaper/papers"
 )
-
-AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 
 PAGE_SIZE = 10
 
@@ -123,7 +122,7 @@ def create_paper(request):
     "logoUrl": logoUrl,
     "docUrl": docUrl
   }, headers={
-    "Authorization": "Bearer " + AUTH_TOKEN
+    "Authorization": "Bearer " + settings.AUTH_TOKEN
   })
 
   if response.status_code != 201:
@@ -161,7 +160,7 @@ def edit_paper(request):
     "logoUrl": logoUrl,
     "docUrl": docUrl
   }, headers={
-    "Authorization": "Bearer " + AUTH_TOKEN
+    "Authorization": "Bearer " + settings.AUTH_TOKEN
   })
 
   if response.status_code != 200:
@@ -188,7 +187,7 @@ def delete_paper(request):
     })
   
   response = requests.delete(ISTPAPER_ENDPOINT + "/" + paper_id, headers={
-    "Authorization": "Bearer " + AUTH_TOKEN
+    "Authorization": "Bearer " + settings.AUTH_TOKEN
   })
 
   return render(request, "DEIPaper/delete-paper.html", {
