@@ -11,7 +11,7 @@ Projeto realizado no âmbito da candidatura à BII BL039/2022, tendo como objeti
 
 Para correr a aplicação localmente, é necessária uma máquina equipada com:
 
-  - `Django`, 4.0 ou superior;
+  - `Django`, 3.1 ou superior;
   - `requests`, 2.27 ou superior;
   - `django-crispy-forms`, 1.14 ou superior.
 
