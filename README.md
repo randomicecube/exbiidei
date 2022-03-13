@@ -28,7 +28,7 @@ Vale a penar notar que a flag `--insecure` é necessária para que o `Django` co
 
 De seguida, poderá interagir com a aplicação através do browser, por exemplo, acedendo via http://localhost:8000/ ou http://127.0.0.1:8000.
 
-`AUTH_TOKEN` deve estar definida como variável de ambiente do sistema para que a aplicação possa funcionar.
+`SECRET_KEY` deve estar definida como variável de ambiente do sistema para que a aplicação possa funcionar.
 
 ## Opções de desenho
 
